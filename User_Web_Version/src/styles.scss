@@ -1,0 +1,42 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+*/
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: "regular";
+  src: url(assets/fonts/Poppins-Regular.ttf);
+}
+
+@font-face {
+  font-family: "bold";
+  src: url(assets/fonts/Poppins-Bold.ttf);
+}
+
+@font-face {
+  font-family: "medium";
+  src: url(assets/fonts/Poppins-Medium.ttf);
+}
+
+@font-face {
+  font-family: "semi-bold";
+  src: url(assets/fonts/Poppins-SemiBold.ttf);
+}
+
+* {
+  font-family: "regular";
+}
+
+.bg_image {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.swal2-container {
+  z-index: 10000 !important;
+}

@@ -1,0 +1,118 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<div class="container haveData">
+  <h2 style="margin: 20px 0px;">{{util.translate('My Orders')}}</h2>
+  <div class="card_div" *ngFor="let item of myOrders" (click)="goToHistoryDetail(item.id)">
+
+    <div class="resto_detail">
+      <div class="back_image"
+        [ngStyle]="{'background-image':'url('+api.mediaURL+item.store_cover+'),url(assets/images/placeholder.jpg)'}">
+      </div>
+      <div
+        style="margin:0px 20px;display: flex;flex-direction: column;align-items:flex-start;justify-content:flex-start;">
+        <label class="res_name" style="margin: 0px;">{{item.store_name}}</label>
+        <label class="res_location" style="margin: 0px;">
+          {{item.store_address}}
+        </label>
+      </div>
+    </div>
+
+    <div class="line_div"></div>
+    <div class="order_detail">
+      <label class="head_gray">{{util.translate('ITEMS')}}</label>
+      <div class="small_lbl">
+        <span *ngFor="let order of item.orders;let ol = index">
+          <div *ngIf="!order.selectedItem || !order.selectedItem.length" class="border_bottom">
+            <span style="font-size: 12px;">{{order.name}} X {{order.quantiy}}</span>
+            <span *ngIf="util.appSettings.currencySide == 'left'">
+              {{util.appSettings.currencySymbol}}
+              {{order.price}}
+            </span>
+            <span *ngIf="util.appSettings.currencySide == 'right'">
+              {{order.price}}
+              {{util.appSettings.currencySymbol}}
+            </span>
+          </div>
+
+          <div *ngFor="let subItems of order.selectedItem;let j = index" class="subNames">
+            <label class="food_title">{{order.name}} X {{order.selectedItem[j].total}}</label>
+            <div *ngFor="let addods of subItems.item" class="flex_titles">
+              <p class="sub_name">
+                - {{addods.name}}
+              </p>
+              <p class="sub_name">
+                <span *ngIf="util.appSettings.currencySide == 'left'">
+                  {{util.appSettings.currencySymbol}}
+                  {{addods.value}}
+                </span>
+                <span *ngIf="util.appSettings.currencySide == 'right'">
+                  {{addods.value}}
+                  {{util.appSettings.currencySymbol}}
+                </span>
+              </p>
+            </div>
+          </div>
+        </span>
+      </div>
+      <label class="head_gray">{{util.translate('ORDERED ON')}}</label>
+      <label class="small_lbl">{{getDate(item.time)}} </label>
+      <label class="head_gray">{{util.translate('TOTAL AMOUNT')}}</label>
+      <label class="small_lbl">
+        <span *ngIf="util.appSettings.currencySide == 'left'">
+          {{util.appSettings.currencySymbol}}
+          {{item.grand_total}}
+        </span>
+        <span *ngIf="util.appSettings.currencySide == 'right'">
+          {{item.grand_total}}
+          {{util.appSettings.currencySymbol}}
+        </span>
+      </label>
+    </div>
+
+    <div class="line_div"></div>
+
+    <div class="status_detail" *ngIf="item.status =='completed' || item.status == 'delivered'">
+      <div class="deliver_div">
+        {{util.translate('Delivered')}}
+      </div>
+    </div>
+    <div class="status_detail" *ngIf="item.status =='rejected' || item.status == 'cancel'">
+      <div class="deliver_div">
+        {{util.translate('Your Order is')}} {{util.translate(item.status)}}
+      </div>
+    </div>
+    <div class="status_detail" *ngIf="item.status =='created' || item.status =='ongoing' || item.status == 'accepted'">
+      <div class="deliver_div">
+        {{util.translate('Your Order is')}} {{util.translate(item.status)}}
+      </div>
+      <div class="repeat_div" style="color: green;">
+        <mdb-icon fas icon="location-arrow" color="primary"></mdb-icon> {{util.translate('Track Order')}}
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngFor="let item of dummy" class="card_div">
+    <div class="resto_detail">
+      <div class="back_image">
+        <ngx-skeleton-loader appearance="circle" [theme]="{ 'border-radius': '5px', height: '50px',width:'100%'}">
+        </ngx-skeleton-loader>
+      </div>
+      <div style="margin-left: 20px;display: flex;flex-direction: column;">
+        <label class="res_name" style="margin: 0px;">
+          <ngx-skeleton-loader appearance="line" [theme]="{  height: '20px',width:'120px'}">
+          </ngx-skeleton-loader>
+        </label>
+        <label class="res_location" style="margin: 0px;">
+          <ngx-skeleton-loader appearance="line" [theme]="{  height: '20px',width:'70px'}"> </ngx-skeleton-loader>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

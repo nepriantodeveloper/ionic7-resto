@@ -1,0 +1,88 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<footer class="page-footer font-small back_footer" style="padding-top: 1px;">
+
+  <div class="container text-center text-md-left mt-5">
+    <div class="row" style="border-bottom: 1px solid white">
+
+      <div class="col-md-4 col-lg-4 col-xl-3 mb-4" style="text-align: initial;">
+
+        <label class=" footer_lbl">{{util.generalSettings.name}} </label>
+
+        <label *ngIf="util.generalSettings.web_footer">
+          {{util.generalSettings.web_footer}}
+        </label>
+
+      </div>
+
+      <div class="col-md-4 col-lg-4 col-xl-2 mx-auto mb-4" style="text-align: initial;">
+
+        <label class=" footer_lbl">{{util.translate('Important Links')}}</label>
+
+        <div class="flex_box" (click)="goToAbout()">
+          <a class="">{{util.translate('About')}}</a>
+        </div>
+        <div class="flex_box" (click)="blogs()">
+          <a class="">{{util.translate('The Blogs')}}</a>
+        </div>
+        <div class="flex_box" (click)="goToContact()">
+          <a class="">{{util.translate('Contact us')}}</a>
+        </div>
+        <div class="flex_box" (click)="goToFaqs()">
+          <a class="">{{util.translate('FAQ')}}</a>
+        </div>
+        <div class="flex_box" (click)="goToNotice()">
+          <a class="">{{util.translate('Legal Mentions')}}</a>
+        </div>
+        <div class="flex_box" (click)="goToCookies()">
+          <a class="">{{util.translate('Cookies')}}</a>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-lg-4 col-xl-3 mx-auto mb-md-0 mb-4" style="text-align: initial;"
+        *ngIf="util.generalSettings">
+        <label class=" footer_lbl">{{util.translate('Contact')}}</label>
+
+        <div class="flex_box">
+          <a>
+            {{util.generalSettings.city}} - {{util.generalSettings.country}} - {{util.generalSettings.zip}}
+          </a>
+        </div>
+
+        <div class="flex_box">
+          <a>{{util.generalSettings.mobile}} </a>
+        </div>
+
+        <div class="flex_box">
+          <a>{{util.generalSettings.email}} </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-copyright text-center py-3" style="background: rgba(0,0,0,0.5); text-align: initial;">
+    <div class="container">
+      <label>© {{getCopyright()}} {{util.translate('Copyright')}}:<a [href]="util.generalSettings.google_playstore">
+          {{util.generalSettings.name}}</a></label>
+      <div>
+        <a [href]="util.generalSettings.facebook" target="_blank" rel="noopener noreferrer">
+          <mdb-icon fab icon="facebook-f"></mdb-icon>
+        </a>
+        <a [href]="util.generalSettings.instagram" target="_blank" rel="noopener noreferrer">
+          <mdb-icon fab icon="instagram"></mdb-icon>
+        </a>
+        <a [href]="util.generalSettings.twitter" target="_blank" rel="noopener noreferrer">
+          <mdb-icon fab icon="twitter"></mdb-icon>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</footer>

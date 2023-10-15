@@ -1,0 +1,144 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+*/
+.haveData {
+  margin-top: 40px;
+
+  .myOrders {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 10px;
+
+    .restInfo {
+      .cover {
+        height: 50px;
+        width: 50px;
+        border-radius: 5px;
+        position: absolute;
+        left: 20px;
+      }
+
+      .restName {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: black;
+        text-transform: capitalize;
+        display: block;
+      }
+
+      .deliveryAddress {
+        font-size: 0.7rem;
+        display: block;
+        color: gray;
+      }
+    }
+  }
+
+  .card_div {
+    width: 100%;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 0.5px solid lightgray;
+    text-align: start;
+
+    .line_div {
+      height: 1px;
+      width: 100%;
+      background: lightgray;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .resto_detail {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .back_image {
+        height: 50px;
+        width: 50px;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 5px;
+        min-width: 50px;
+      }
+
+      .res_name {
+        font-weight: 600;
+      }
+
+      .res_location {
+        color: lightgray;
+        font-size: 14px;
+      }
+    }
+
+    .order_detail {
+      .head_gray {
+        color: lightgray;
+        font-size: 13px;
+        margin-top: 10px;
+        display: block;
+        margin-bottom: 0px;
+      }
+
+      .small_lbl {
+        font-size: 12px;
+        font-weight: 600;
+        display: block;
+        margin-bottom: 0px;
+      }
+
+      .border_bottom {
+        border-bottom: 1px dashed lightgray;
+        padding: 5px 0px;
+        font-size: 15px;
+        font-weight: bold;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .subNames {
+        border-bottom: 1px dashed lightgray;
+        padding-bottom: 5px;
+        text-align: start;
+
+        .food_title {
+          font-size: 12px;
+          font-weight: bold;
+          text-align: start;
+        }
+
+        .flex_titles {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+
+          .sub_name {
+            margin: 0px;
+            color: black;
+            font-size: 10px;
+          }
+        }
+      }
+    }
+
+    .status_detail {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      color: lightgray;
+      font-size: 14px;
+    }
+  }
+}
