@@ -1,0 +1,125 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" mode="ios">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Payment')}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="payment-screen">
+    <div class="billing">
+      <div class="singleRow">
+        <ion-label class="headerTitle">{{util.translate('Item Total')}}</ion-label>
+        <ion-label class="price">
+          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{cart.totalPrice}}
+          </span>
+          <span *ngIf="util.appSettings.currencySide == 'right'">{{cart.totalPrice}} {{util.appSettings.currencySymbol}}
+          </span>
+        </ion-label>
+      </div>
+      <div class="singleRow" *ngIf="cart.discount && cart.coupon">
+        <ion-label class="headerTitle">{{util.translate('Discount')}}</ion-label>
+        <ion-label class="price"> -
+          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{cart.discount}}
+          </span>
+          <span *ngIf="util.appSettings.currencySide == 'right'">{{cart.discount}} {{util.appSettings.currencySymbol}}
+          </span>
+        </ion-label>
+      </div>
+      <div class="singleRow">
+        <ion-label class="headerTitle">{{util.translate('Taxes & Charges')}} ({{util.generalSettings.tax}} %)
+        </ion-label>
+        <ion-label class="price">
+          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{cart.orderTax}}
+          </span>
+          <span *ngIf="util.appSettings.currencySide == 'right'">{{cart.orderTax}} {{util.appSettings.currencySymbol}}
+          </span>
+        </ion-label>
+      </div>
+      <div class="singleRow">
+        <ion-label class="headerTitle">{{util.translate('Delivery Charges')}}</ion-label>
+        <ion-label class="price">
+          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+            {{cart.deliveryPrice}}
+          </span>
+          <span *ngIf="util.appSettings.currencySide == 'right'">{{cart.deliveryPrice}}
+            {{util.appSettings.currencySymbol}}
+          </span>
+        </ion-label>
+      </div>
+      <div class="singleRow" *ngIf="cart.walletDiscount >0">
+        <ion-label class="headerTitle">{{util.translate('Wallet Balance')}}</ion-label>
+        <ion-label class="price">
+          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+            {{cart.walletDiscount}}
+          </span>
+          <span *ngIf="util.appSettings.currencySide == 'right'">{{cart.walletDiscount}}
+            {{util.appSettings.currencySymbol}}
+          </span>
+        </ion-label>
+      </div>
+      <div class="singleRow">
+        <ion-label class="headerTotal boldClass">{{util.translate('Grand Total')}}</ion-label>
+        <ion-label class="priceTotal boldClass">
+          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{cart.grandTotal}}
+          </span>
+          <span *ngIf="util.appSettings.currencySide == 'right'">{{cart.grandTotal}} {{util.appSettings.currencySymbol}}
+          </span>
+        </ion-label>
+      </div>
+    </div>
+    <div class="header">
+      <ion-label class="title">{{util.translate('Payment Options')}}</ion-label>
+    </div>
+    <ion-item lines="none">
+      <ion-label>
+        <h2>{{util.generalSettings.name}} {{util.translate('Wallet Balance')}} </h2>
+        <p>{{util.translate('Available Balance')}}
+          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{balance}} </span>
+          <span *ngIf="util.appSettings.currencySide == 'right'">{{balance}} {{util.appSettings.currencySymbol}} </span>
+        </p>
+      </ion-label>
+      <ion-checkbox slot="end" [disabled]="balance <= 0 || cart.coupon" [(ngModel)]="walletCheck"
+        [checked]="walletCheck" (ionChange)="walletChange($event)" mode="ios">
+      </ion-checkbox>
+    </ion-item>
+
+    <ion-card class="promo-code" mode="ios">
+      <ion-radio-group [(ngModel)]="pay_method" (ionChange)="paymentChange()" mode="md">
+        <ion-item *ngFor="let item of payments">
+          <ion-thumbnail slot="start">
+            <img [src]="api.mediaURL+item.cover" [alt]="item.name">
+          </ion-thumbnail>
+          <ion-label>{{item.name}}</ion-label>
+          <ion-radio [value]="item.id" mode="md" slot="end"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-card>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" mode="ios" (click)="goToTrack()">
+      {{util.translate('Pay Now')}}
+      <span *ngIf="util.appSettings.currencySide == 'left'"> &nbsp;{{util.appSettings.currencySymbol}}
+        {{cart.grandTotal}} &nbsp;</span>
+      <span *ngIf="util.appSettings.currencySide == 'right'"> &nbsp; {{cart.grandTotal}}
+        {{util.appSettings.currencySymbol}}&nbsp;</span>
+      <span *ngIf="payName">
+        {{payName}}
+      </span>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

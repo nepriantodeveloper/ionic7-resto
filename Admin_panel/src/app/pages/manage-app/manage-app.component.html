@@ -1,0 +1,44 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          {{util.translate('Manage App')}}
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label>{{util.translate('App Status')}}</label>
+                <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="status">
+                  <option [value]="0">{{util.translate('Closed')}} </option>
+                  <option [value]="1"> {{util.translate('Open')}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label>{{util.translate('Message')}}</label>
+                <textarea type="text" class="form-control" rows="3" [ngModelOptions]="{standalone: true}"
+                  [(ngModel)]="message" [placeholder]="util.translate('Message')"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-success" (click)="saveSettings()">
+            {{util.translate('Submit')}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

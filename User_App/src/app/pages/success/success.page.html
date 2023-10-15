@@ -1,0 +1,29 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border">
+  <ion-toolbar mode="ios" color="primary">
+    <ion-title>{{util.translate("Success")}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="success-screen">
+    <div class="success-animation">
+      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+      </svg>
+    </div>
+
+    <h2 class="ion-text-center">{{util.translate("Order Placed successfully")}}</h2>
+    <p class="ion-text-center">
+      {{util.translate("Thank you for placing orders with us.. your order will delivered soon..")}}
+    </p>
+  </div>
+</ion-content>

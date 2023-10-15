@@ -1,0 +1,190 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          {{util.translate('Driver Information')}}
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-xl-4">
+              <div class="user-card-body ">
+                <div class="card-body">
+                  <div class="top-card text-center">
+                    <img [src]="api.imageUrl+cover" style="height: 100px;width: 100px;border-radius: 50%;"
+                      onError="this.src='assets/img/dummy.jpeg'" class="img-responsive" alt="">
+                  </div>
+                  <div class="card-contain text-center p-t-40">
+                    <h5 class="text-capitalize p-b-10">{{name}}</h5>
+                    <p class="text-muted">{{email}}</p>
+                    <p class="text-muted">{{mobile}}</p>
+                  </div>
+                  <div class="card-data">
+                    <div class="row">
+                      <div class="col-6 b-r-default text-center">
+                        <p class="text-muted card-title">{{util.translate('Orders')}}</p>
+                        <span>{{orders.length}}</span>
+                      </div>
+                      <div class="col-6 b-r-default text-center">
+                        <p class="text-muted card-title">{{util.translate('Reviews')}}</p>
+                        <span>{{reviews.length}}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-8">
+              <div class="card-body">
+                <c-nav variant="tabs">
+                  <a [cTabContent]="tabContent" [routerLink] [tabPaneIdx]="0" cNavLink
+                    [active]="activeTab == 0 ? true : false">{{util.translate('Orders')}}</a>
+                  <a [cTabContent]="tabContent" [routerLink] [tabPaneIdx]="1" cNavLink
+                    [active]="activeTab == 1 ? true : false">{{util.translate('Reviews')}}</a>
+                </c-nav>
+                <c-tab-content #tabContent="cTabContent" [activeTabPaneIdx]="activeTab"
+                  (activeTabPaneIdxChange)="onTabChange($event)">
+                  <c-tab-pane class="p-3">
+                    <div class="card_div"
+                      *ngFor="let item of orders | paginate: {id:'pagin1', itemsPerPage: 5, currentPage: orderPage }"
+                      (click)="openOrder(item)">
+
+                      <div class="resto_detail">
+                        <div class="back_image"
+                          [ngStyle]="{'background-image':'url('+api.imageUrl+item.store_cover+'),url(assets/img/dummy.jpeg)'}">
+                        </div>
+                        <div style="margin-left: 20px;">
+                          <label class="res_name">{{item.store_name}}</label>
+                          <label class="res_location">
+                            {{item.store_address}}
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="line_div"></div>
+
+                      <div class="resto_detail">
+                        <div class="back_image"
+                          [ngStyle]="{'background-image':'url('+api.imageUrl+item.user_cover+'),url(assets/img/dummy.jpeg)'}">
+                        </div>
+                        <div style="margin-left: 20px;">
+                          <label class="res_name">{{item.first_name +' ' +item.last_name}}</label>
+                          <label class="res_location">
+                            {{item.delivery_address}}
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="line_div"></div>
+
+                      <div class="order_detail">
+                        <label class="head_gray">{{util.translate('ITEMS')}}</label>
+                        <div class="small_lbl">
+                          <span *ngFor="let order of item.orders;let ol = index">
+                            <div *ngIf="!order.selectedItem || !order.selectedItem.length" class="border_bottom">
+                              <span>{{order.name}} X {{order.quantiy}}</span>
+                              <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                                {{order.price}}</span>
+                              <span *ngIf="util.appSettings.currencySide == 'right'">{{order.price}}
+                                {{util.appSettings.currencySymbol}}</span>
+                            </div>
+
+                            <div *ngFor="let subItems of order.selectedItem;let j = index" class="subNames">
+                              <label class="food_title">{{order.name}} X {{order.selectedItem[j].total}}</label>
+                              <div *ngFor="let addods of subItems.item" class="flex_titles">
+                                <p class="sub_name">
+                                  - {{addods.name}}
+                                </p>
+                                <p class="sub_name">
+                                  <span
+                                    *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                                    {{addods.value}}</span>
+                                  <span *ngIf="util.appSettings.currencySide == 'right'">{{addods.value}}
+                                    {{util.appSettings.currencySymbol}}</span>
+                                </p>
+
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <label class="head_gray">{{util.translate('ORDERED ON')}}</label>
+                        <label class="small_lbl">{{item.time}} </label>
+                        <label class="head_gray">{{util.translate('TOTAL AMOUNT')}}</label>
+                        <label class="small_lbl">
+
+                          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                            {{item.grand_total}}</span>
+                          <span *ngIf="util.appSettings.currencySide == 'right'">{{item.grand_total}}
+                            {{util.appSettings.currencySymbol}}</span>
+                        </label>
+                      </div>
+
+                      <div class="line_div"></div>
+
+                      <div class="status_detail" *ngIf="item.status =='completed' || item.status == 'delivered'">
+                        <div class="deliver_div">
+                          {{util.translate('Delivered')}}
+                        </div>
+                      </div>
+                      <div class="status_detail" *ngIf="item.status =='rejected' || item.status == 'cancel'">
+                        <div class="deliver_div">
+                          {{util.translate('Your Order is')}} {{util.translate(item.status)}}
+                        </div>
+                      </div>
+                      <div class="status_detail"
+                        *ngIf="item.status =='created' || item.status =='ongoing' || item.status == 'accepted'">
+                        <div class="deliver_div">
+                          {{util.translate('Your Order is')}} {{util.translate(item.status)}}
+                        </div>
+                        <div class="repeat_div" style="color: green;">
+                          <ion-icon name="map-outline"></ion-icon>{{util.translate('Track Order')}}
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="orders?.length > 0">
+                      <pagination-controls id="pagin1" (pageChange)="orderPage = $event"></pagination-controls>
+                    </div>
+                  </c-tab-pane>
+
+                  <c-tab-pane class="p-3">
+                    <div class="review-card"
+                      *ngFor="let item of reviews | paginate: {id:'pagin2', itemsPerPage: 5, currentPage: reviewPage }">
+                      <div class="back_image" *ngIf="item && item.userInfo && item.userInfo.cover"
+                        [ngStyle]="{'background-image':'url('+api.imageUrl+item.userInfo.cover+'),url(assets/img/dummy.jpeg)'}">
+                      </div>
+
+                      <div class="name-content">
+                        <p class="way">{{util.translate('Received From')}} {{item.way}} </p>
+                        <p class="name"
+                          *ngIf="item && item.userInfo && item.userInfo.first_name && item.userInfo.last_name">
+                          {{item.userInfo.first_name}} {{item.userInfo.last_name}} </p>
+                        <p class="message"> {{item.msg}} </p>
+                        <p class="date"> {{item.updated_at}} </p>
+                      </div>
+                    </div>
+
+                    <div *ngIf="reviews?.length > 0">
+                      <pagination-controls id="pagin2" (pageChange)="reviewPage = $event"></pagination-controls>
+                    </div>
+                  </c-tab-pane>
+
+                </c-tab-content>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

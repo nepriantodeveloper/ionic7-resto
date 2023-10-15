@@ -1,0 +1,271 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="animated fadeIn">
+  <div class="row mb-2">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          {{util.translate('Order Details')}} #{{id}}
+          <div class="card-header-actions">
+            <button type="link" class="btn btn-primary" (click)="printOrder()">{{util.translate('Print')}}
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-xl-12">
+              <div *ngIf="isLoaded == false"
+                style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                <c-spinner color="primary"></c-spinner>
+              </div>
+              <div *ngIf="isLoaded == true" class="order-details-screen">
+
+                <div class="card_div">
+                  <div class="resto_detail">
+                    <div class="back_image"
+                      [ngStyle]="{'background-image':'url('+api.imageUrl+userPic+'),url(assets/img/dummy.jpeg)'}">
+                    </div>
+                    <div style="margin-left: 10px;">
+                      <label class="res_name">{{userName}}</label>
+                      <label class="res_location">{{time}}</label>
+                    </div>
+                  </div>
+                </div>
+
+                <c-alert color="secondary">
+                  <p>{{util.translate('Driver Contact Informations')}}</p>
+                </c-alert>
+
+                <div class="card_div2" *ngIf="driverMobile">
+                  <div class="personal_detail">
+                    <div style="display: flex;">
+                      <svg [cIcon]="iconSetService.icons.cilPhone" size="xl" title="List Icon"></svg>&nbsp;&nbsp;
+                      <label class="res_name">{{driverMobile}}</label>
+                    </div>
+                    <div>
+                      <button cButton color="primary" (click)="driverCall()">{{util.translate('Call')}}</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="line_div"></div>
+
+
+                <c-alert color="secondary">
+                  <p>{{util.translate('User Contact Informations')}}</p>
+                </c-alert>
+
+                <div class="card_div2" *ngIf="phone">
+                  <div class="personal_detail">
+                    <div style="display: flex;">
+                      <svg [cIcon]="iconSetService.icons.cilPhone" size="xl" title="List Icon"></svg>&nbsp;&nbsp;
+                      <label class="res_name">{{phone}}</label>
+                    </div>
+                    <div>
+                      <button cButton color="primary" (click)="call()">{{util.translate('Call')}}</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="line_div"></div>
+
+                <div class="card_div2" *ngIf="userEmail">
+                  <div class="personal_detail">
+                    <div style="display: flex;">
+                      <svg [cIcon]="iconSetService.icons.cilPaperPlane" size="xl" title="List Icon"></svg>&nbsp;&nbsp;
+                      <label class="res_name">{{userEmail}}</label>
+                    </div>
+                    <div>
+                      <button cButton color="primary" (click)="email()">{{util.translate('Email')}}</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="line_div"></div>
+
+                <div class="card_div2">
+                  <div class="personal_detail">
+                    <div style="display: flex;">
+                      <svg [cIcon]="iconSetService.icons.cilLocationPin" size="xl" title="List Icon"></svg>&nbsp;&nbsp;
+                      <label class="res_name">{{deliveryAddress}}</label>
+                    </div>
+                  </div>
+                </div>
+
+
+                <span *ngFor="let item of orders">
+
+                  <div *ngFor="let subItems of item.selectedItem;let j = index" class="subNames">
+                    <label class="food_title">
+                      {{item.name}} X
+                      {{item.selectedItem[j].total}}</label>
+                    <div *ngFor="let addods of subItems.item" class="flex_titles">
+                      <p class="sub_name">
+                        - {{addods.name}}
+                      </p>
+                      <p class="sub_name">
+                        <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                          {{addods.value}}</span>
+                        <span *ngIf="util.appSettings.currencySide == 'right'">{{addods.value}}
+                          {{util.appSettings.currencySymbol}}</span>
+                      </p>
+
+                    </div>
+                  </div>
+
+                  <div class="card_div4" *ngIf="!item.selectedItem || !item.selectedItem.length">
+                    <div class="flex_div">
+                      <label class="food_title">{{item.name}} X {{item.quantiy}} </label>
+                      <label class="food_price">
+                        <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                          {{item.price}}</span>
+                        <span *ngIf="util.appSettings.currencySide == 'right'">{{item.price}}
+                          {{util.appSettings.currencySymbol}}</span>
+                      </label>
+                    </div>
+
+                  </div>
+
+                </span>
+
+                <label class="head_gray">{{util.translate('Order Notes')}}</label>
+                <label class="small_lbl">{{orderNotes}}</label>
+                <div class="card_div2">
+
+                  <div class="order_detail">
+                    <label class="small_lbl2">{{util.translate('SubTotal')}}
+                      <span class="prize1">
+
+                        <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                          {{total}}</span>
+                        <span *ngIf="util.appSettings.currencySide == 'right'">{{total}}
+                          {{util.appSettings.currencySymbol}}</span>
+                      </span>
+                    </label>
+                    <label class="small_lbl2">{{util.translate('Delivery Charge')}}
+                      <span class="prize1">
+                        <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                          {{deliveryCharge}}</span>
+                        <span *ngIf="util.appSettings.currencySide == 'right'">{{deliveryCharge}}
+                          {{util.appSettings.currencySymbol}}</span>
+                      </span>
+                    </label>
+
+                    <label class="small_lbl2">{{util.translate('Discount')}}
+                      <span class="prize1">
+                        <span *ngIf="util.appSettings.currencySide == 'left'">- {{util.appSettings.currencySymbol}}
+                          {{discount}}</span>
+                        <span *ngIf="util.appSettings.currencySide == 'right'">- {{discount}}
+                          {{util.appSettings.currencySymbol}}</span>
+                      </span>
+                    </label>
+
+
+                    <label class="small_lbl2">{{util.translate('Wallet Price')}}
+                      <span class="prize1">
+                        <span *ngIf="util.appSettings.currencySide == 'left'">- {{util.appSettings.currencySymbol}}
+                          {{walletPrice}}</span>
+                        <span *ngIf="util.appSettings.currencySide == 'right'">- {{walletPrice}}
+                          {{util.appSettings.currencySymbol}}</span>
+                      </span>
+                    </label>
+
+                    <label class="small_lbl2">{{util.translate('Service Tax')}}
+                      <span class="prize1">
+                        <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                          {{serviceTax}}</span>
+                        <span *ngIf="util.appSettings.currencySide == 'right'">{{serviceTax}}
+                          {{util.appSettings.currencySymbol}}</span>
+                      </span>
+                    </label>
+                    <label class="small_lbl2">{{util.translate('Grand Total')}}
+                      <span class="prize1">
+                        <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                          {{grandTotal}}</span>
+                        <span *ngIf="util.appSettings.currencySide == 'right'">{{grandTotal}}
+                          {{util.appSettings.currencySymbol}}</span>
+                      </span>
+                    </label>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="btn_div" *ngIf="status == 'created'">
+            <button cButton color="danger" (click)="changeStatus('rejected')">
+              {{util.translate('Reject Order')}}</button>
+            <button cButton color="success" (click)="changeStatus('accepted')">
+              {{util.translate('Accept Order')}}</button>
+          </div>
+
+          <div class="status_div" *ngIf="status == 'accepted' || status == 'ongoing' ">
+            <div style="width: 200px;">
+              <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="changeStatusOrder">
+                <option value="ongoing"> {{util.translate('Ongoing')}} </option>
+                <option value="cancel"> {{util.translate('Cancel')}} </option>
+                <option value="delivered"> {{util.translate('Delivered')}} </option>
+              </select>
+
+            </div>
+            <div>
+              <button cButton color="success" (click)="changeOrderStatus()">
+                {{util.translate('Update Status')}}</button>
+            </div>
+          </div>
+
+          <label class="green" *ngIf="status == 'delivered'">{{util.translate('Order Status')}}
+            {{util.translate('Order Delivered')}}</label>
+          <label class="red" *ngIf="status == 'cancel'">{{util.translate('Order Cancelled by user')}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{util.translate('Select Driver')}} </h5>
+        <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row" *ngFor="let item of dummyDriver;" (click)="selectDriver(item.id)">
+          <div class="col-2">
+            <img class="img-responsive" style="height: 40px;width: 40px; object-fit: cover;"
+              [src]="api.imageUrl + item.cover" onError="this.src='assets/img/dummy.jpeg'">
+          </div>
+          <div class="col-8">
+            <label>{{item.first_name +' '+item.last_name}} <br>
+              <p>{{util.translate('Distance')}} : {{item.distance}} {{distanceType}}</p>
+            </label>
+          </div>
+          <div class="col-2">
+            <svg [cIcon]="iconSetService.icons.cilCheckCircle" size="xl" title="List Icon"
+              *ngIf="selectedDriver == item.id"></svg>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="myModal.hide()">{{util.translate('Close')}}</button>
+        <button type="button" class="btn btn-primary" (click)="saveDriver()">
+          {{util.translate('Select Driver')}}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

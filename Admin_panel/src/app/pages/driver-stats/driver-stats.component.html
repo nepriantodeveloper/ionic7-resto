@@ -1,0 +1,183 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          {{util.translate('Driver Stats')}}
+        </div>
+
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label>{{util.translate('Please select driver')}}</label>
+                <select name="select" [(ngModel)]="driverId" class="form-control">
+                  <option [value]="item.id" *ngFor="let item of drivers">{{item.first_name}} {{item.last_name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label>{{util.translate('Enter Commission')}}</label>
+                <input type="number" [(ngModel)]="driverCommission" class="form-control"
+                  [placeholder]="util.translate('Enter Commission')">
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>{{util.translate('From Date')}} </label>
+                <input type="date" [(ngModel)]="from" class="form-control" [placeholder]="util.translate('From Date')">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>{{util.translate('To Date')}} </label>
+                <input type="date" [(ngModel)]="to" class="form-control" [placeholder]="util.translate('To Date')">
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:20px;">
+            <div class="col-sm-12">
+              <button class="btn btn-danger btn-round" (click)="getStats()">
+                {{util.translate('Get Stats')}}</button>
+              <button style="margin-left: 20px;" [useExistingCss]="true" [printTitle]="getName()"
+                printSectionId="print-section" ngxPrint
+                *ngIf="driverId && from && to && orders?.length && apiCalled == true" class="btn btn-primary"><i
+                  class="icofont icofont-printer"></i>{{util.translate('Print')}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 style="text-align: center;" *ngIf="driverId && from && to && !orders?.length && apiCalled == true">
+  {{util.translate('No Orders Found')}}
+</h2>
+<div class="row" id="print-section" *ngIf="driverId && from && to && orders?.length">
+  <div class="col-md-12">
+    <div class="card" style="padding: 20px;">
+      <h3 style="text-align: center;color: #7ec6aa;">{{util.generalSettings.name}} </h3>
+      <p style="text-align: center;color: #ED7669;">{{getDate(from)}} {{util.translate('to')}} {{getDate(to)}}</p>
+      <p style="text-align: right;font-weight: bold;margin: 0px !important;color: #7EC6AA;">
+        {{util.generalSettings.name}}</p>
+      <p style="text-align: right;font-weight: bold;margin: 0px !important;">
+        {{util.generalSettings.address}}, {{util.generalSettings.city}} , {{util.generalSettings.state}},
+        {{util.generalSettings.country}}, {{util.generalSettings.zip}}
+      </p>
+      <p style="text-align: right;font-weight: bold;margin: 0px !important;">
+        {{util.generalSettings.email}}
+      </p>
+      <p style="text-align: right;font-weight: bold;margin: 0px !important;">
+        {{util.generalSettings.mobile}}
+      </p>
+      <p style="text-align: left; font-weight: bold;margin: 0px;color: #aaafad;">{{storename}}</p>
+      <p style="text-align: left; font-weight: bold;color: #7EC6AA;">{{today()}}</p>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr class="text-uppercase" style="color:#7ec6aa ;">
+              <th>{{util.translate('Id')}}</th>
+              <th>{{util.translate('Ordered on')}}</th>
+              <th>{{util.translate('Items')}}</th>
+              <th>{{util.translate('Total')}}</th>
+              <th>{{util.translate('Discount')}}</th>
+              <th>{{util.translate('Grand Total')}}</th>
+              <th>{{util.translate('Commission')}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of orders" style="background-color: #F5F8FA;">
+              <td>##{{item.id}}</td>
+              <td>{{item.date_time}}</td>
+              <td>
+                <div style="width: 150px !important; white-space: pre-wrap;">
+                  <span *ngFor="let orders of item.orders;let i =index;">
+                    {{orders.name}} <span *ngIf="item.orders.length -1 !== i">,</span>
+                  </span>
+                </div>
+              </td>
+
+              <td>
+                <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                  {{item.total}}</span>
+                <span *ngIf="util.appSettings.currencySide == 'right'">{{item.total}}
+                  {{util.appSettings.currencySymbol}}</span>
+              </td>
+              <td>
+                <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                  {{item.discount}}</span>
+                <span *ngIf="util.appSettings.currencySide == 'right'">{{item.discount}}
+                  {{util.appSettings.currencySymbol}}</span>
+              </td>
+              <td>
+                <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                  {{item.grand_total}}</span>
+                <span *ngIf="util.appSettings.currencySide == 'right'">{{item.grand_total}}
+                  {{util.appSettings.currencySymbol}}</span>
+              </td>
+              <td>
+                <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                  {{getCommisions(item.total)}}</span>
+                <span *ngIf="util.appSettings.currencySide == 'right'">{{getCommisions(item.total)}}
+                  {{util.appSettings.currencySymbol}}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row" style="padding: 20px;">
+        <div class="col-sm-6"></div>
+        <div class="col-sm-4">
+          <p style="text-align: right;font-weight: bold;margin: 0px !important;color: #7EC6AA;;">
+            {{util.translate('Total')}}</p>
+          <p style="text-align: right;font-weight: bold;margin: 0px !important;color: #7EC6AA;;">
+            {{util.translate('Commission')}}
+          </p>
+          <p style="text-align: right;font-weight: bold;margin: 0px !important;color: #7EC6AA;;">
+            {{util.translate('Amount Pay')}}
+          </p>
+        </div>
+        <div class="col-sm-2">
+          <p style="color: black !important;margin: 0px !important;text-align: right;">
+            <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+              {{totalAmount}}</span>
+            <span *ngIf="util.appSettings.currencySide == 'right'">{{totalAmount}}
+              {{util.appSettings.currencySymbol}}</span>
+          </p>
+          <p style="color: black !important; margin: 0px !important;text-align: right;">
+            <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+              {{commisionAmount}}</span>
+            <span *ngIf="util.appSettings.currencySide == 'right'">{{commisionAmount}}
+              {{util.appSettings.currencySymbol}}</span>
+          </p>
+          <p style="color: black !important;margin: 0px !important;text-align: right;">
+            <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+              {{toPay}}</span>
+            <span *ngIf="util.appSettings.currencySide == 'right'">{{toPay}}
+              {{util.appSettings.currencySymbol}}</span>
+          </p>
+        </div>
+      </div>
+      <div>
+        <p><span style="font-weight: bold;">{{util.translate('Note :')}} </span>
+          {{util.translate('Commission formula.. ((total) * storecommission) / 100)')}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

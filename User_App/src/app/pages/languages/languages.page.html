@@ -1,0 +1,35 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border" mode="ios">
+  <ion-toolbar mode="ios" color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon slot="icon-only" color="light" mode="md" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Languages')}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="language-screen">
+    <p *ngIf="!util.languages?.length" class="ion-text-center"> {{util.translate('No Languages Found')}} </p>
+    <ion-list>
+      <ion-radio-group [(ngModel)]="selected" (ionChange)="changed()">
+        <ion-item *ngFor="let item of util.languages" class="list" lines="none">
+          <ion-thumbnail slot="start" class="thums">
+            <img [src]="api.mediaURL+ item.cover" alt="" onError="this.src='assets/images/placeholder.jpg'">
+          </ion-thumbnail>
+          <ion-label class="title">{{item.name}}</ion-label>
+          <ion-radio [value]="item.id" slot="end" mode="md"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </div>
+</ion-content>

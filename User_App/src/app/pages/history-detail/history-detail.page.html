@@ -1,0 +1,186 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" mode="ios">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Order Details')}} #{{id}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="chat()" color="light">
+        <ion-icon slot="end" name="chatbox-ellipses-outline"></ion-icon>
+        {{util.translate('Support')}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="order-details-screen">
+    <div *ngIf="isLoaded == false"
+      style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+      <ion-spinner color="primary" name="crescent"></ion-spinner>
+    </div>
+    <div class="main_content_div" *ngIf="isLoaded == true">
+      <ion-label class="header_lbl">{{util.translate('Order Summary')}}</ion-label>
+      <ion-label class="res_location">{{util.translate('This order with')}} {{restName}} {{util.translate('was')}}
+        {{util.translate(status)}}
+      </ion-label>
+
+      <div class="line_div"></div>
+
+      <ion-label class="res_location">{{address}}</ion-label>
+
+      <div class="flex_div">
+        <ion-label class="res_name" style="margin-top: 0px;">{{util.translate('Your Order')}}</ion-label>
+        <ion-label class="fav_lbl" (click)="trackMyOrder()" *ngIf="status =='ongoing' || status =='accepted' ">
+          {{util.translate('Track Order')}}
+        </ion-label>
+      </div>
+
+      <div class="line_div"></div>
+
+      <span *ngFor="let item of orders">
+
+        <div *ngFor="let subItems of item.selectedItem;let j = index" class="subNames">
+          <ion-label class="food_title">
+            {{item.name}} X
+            {{item.selectedItem[j].total}}</ion-label>
+          <div *ngFor="let addods of subItems.item" class="flex_titles">
+            <p class="sub_name">
+              - {{addods.name}}
+            </p>
+            <p class="sub_name">
+              <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{addods.value}}
+              </span>
+              <span *ngIf="util.appSettings.currencySide == 'right'">{{addods.value}}
+                {{util.appSettings.currencySymbol}}
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="card_div" *ngIf="!item.selectedItem || !item.selectedItem.length">
+          <div class="flex_div">
+            <ion-label class="food_title">{{item.name}} X {{item.quantiy}} </ion-label>
+            <ion-label class="food_price">
+              <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{item.price}}
+              </span>
+              <span *ngIf="util.appSettings.currencySide == 'right'">{{item.price}}
+                {{util.appSettings.currencySymbol}}
+              </span>
+            </ion-label>
+          </div>
+
+        </div>
+
+      </span>
+
+      <div class="line_div"></div>
+
+      <ion-label class="order-total-lbl">
+        <span class="title-lbl">{{util.translate('Item Total')}}</span>
+        <span class="price_lbl">
+          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{total}}
+          </span>
+          <span *ngIf="util.appSettings.currencySide == 'right'">{{total}} {{util.appSettings.currencySymbol}}
+          </span>
+        </span>
+      </ion-label>
+      <ion-label *ngIf="coupon == true" class="order-total-lbl">
+        <span class="title-lbl">{{util.translate('Coupon Discount')}}</span>
+        <span class="price_lbl">
+          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{dicount}}
+          </span>
+          <span *ngIf="util.appSettings.currencySide == 'right'">{{dicount}} {{util.appSettings.currencySymbol}}
+          </span>
+        </span>
+      </ion-label>
+      <ion-label *ngIf="walletUsed == true" class="order-total-lbl">
+        <span class="title-lbl">{{util.translate('Wallet Price')}}</span>
+        <span class="price_lbl">
+          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{walletPrice}}
+          </span>
+          <span *ngIf="util.appSettings.currencySide == 'right'">{{walletPrice}} {{util.appSettings.currencySymbol}}
+          </span>
+        </span>
+      </ion-label>
+      <ion-label class="order-total-lbl">
+        <span class="title-lbl">{{util.translate('Delivery Charge')}}</span>
+        <span class="price_lbl">
+          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{delivery_charge}}
+          </span>
+          <span *ngIf="util.appSettings.currencySide == 'right'">{{delivery_charge}} {{util.appSettings.currencySymbol}}
+          </span>
+        </span>
+      </ion-label>
+      <ion-label class="order-total-lbl">
+        <span class="title-lbl">{{util.translate('Service Charge')}}</span>
+        <span class="price_lbl">
+          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{serviceTax}}
+          </span>
+          <span *ngIf="util.appSettings.currencySide == 'right'">{{serviceTax}} {{util.appSettings.currencySymbol}}
+          </span>
+        </span>
+      </ion-label>
+      <ion-label class="order-total-lbl">
+        <span class="title-lbl">{{util.translate('Grand Total')}}</span>
+        <span class="price_lbl">
+          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{grandTotal}}
+          </span>
+          <span *ngIf="util.appSettings.currencySide == 'right'">{{grandTotal}} {{util.appSettings.currencySymbol}}
+          </span>
+        </span>
+      </ion-label>
+
+      <div class="line_div"></div>
+
+      <ion-label class="res_name">{{util.translate('Order Detail')}}</ion-label>
+      <div class="line_div"></div>
+
+      <ion-label class="head_gray">{{util.translate('Order Number')}}</ion-label>
+      <ion-label class="small_lbl">#{{id}}</ion-label>
+      <ion-label class="head_gray">{{util.translate('Order Notes')}}</ion-label>
+      <ion-label class="small_lbl">{{orderNotes}}</ion-label>
+      <ion-label class="head_gray">{{util.translate('Payment')}}</ion-label>
+      <ion-label class="small_lbl">{{util.translate('Paid :')}} {{paid}} </ion-label>
+      <ion-label class="head_gray">{{util.translate('Date')}}</ion-label>
+      <ion-label class="small_lbl">{{time}}</ion-label>
+      <ion-label class="head_gray">{{util.translate('Deliver to')}}</ion-label>
+      <ion-label class="small_lbl">{{deliveryAddress}}</ion-label>
+
+      <div class="line_div"></div>
+
+      <ion-label class="red_lbl" *ngIf="status =='created' ||status =='ongoing' || status =='accepted' "
+        (click)="call()">
+        {{util.translate('Call Restaurant')}} {{restName}}</ion-label>
+
+      <ion-label class="red_lbl" *ngIf="status =='ongoing' || status =='accepted' " (click)="driverCall()">
+        {{util.translate('Call Driver')}} {{driverName}}</ion-label>
+
+
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <div class="btn_div">
+      <ion-button *ngIf="status =='delivered'" (click)="presentAlertConfirm()" size="small" class="ratae">
+        <ion-icon name="star" color="light" slot="start"></ion-icon>
+        {{util.translate('Rate Order')}}
+      </ion-button>
+      <ion-button *ngIf="status == 'created' ||status == 'ongoing' || status == 'accepted' " (click)="changeStatus()"
+        size="small" class="reject">
+        {{util.translate('Cancel Order')}}
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

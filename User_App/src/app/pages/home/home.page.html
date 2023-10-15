@@ -1,0 +1,260 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border" mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="util.openMenu()">
+        <ion-icon slot="end" name="menu-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title color="light" (click)="findLocation()" class="ion-text-left">
+      <div class="ion-activatable">
+        <ion-icon slot="start" name="location"></ion-icon>
+        {{addressTitle}}
+        <ion-ripple-effect type="bounded"></ion-ripple-effect>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+
+  <ion-item lines="none" (click)="openSearch()" *ngIf="apiCalled == true && list?.length != 0">
+    <ion-label>{{util.translate('Search restaurant..')}} </ion-label>
+    <ion-icon name="search-outline" slot="end"></ion-icon>
+  </ion-item>
+
+  <div class="chips_div animated fadeInDown" *ngIf="!dummy?.length && list?.length && apiCalled  == true">
+    <ion-label class="chip" *ngFor="let item of chips;let i = index" (click)="addFilter(i)">{{item}}</ion-label>
+  </div>
+</ion-header>
+
+<ion-content>
+  <div class="home-screen">
+    <div class="noData" *ngIf="!dummy?.length && !list?.length && apiCalled == true"
+      [style.backgroundImage]="'url(assets/images/nothing.jpg)'">
+    </div>
+    <ion-label class="no-data-text" *ngIf="!dummy?.length && !list?.length && apiCalled == true">
+      {{util.translate('No Restaurants Found!')}}
+    </ion-label>
+
+    <div *ngIf="util.appSettings.home_ui == 0" class="main_content_div1">
+      <swiper-container slides-per-view="1.2" speed="500" loop="false" css-mode="true" space-between="10">
+        <swiper-slide *ngFor="let item of banners;" (click)="openOffers(item)">
+          <div class="back_image"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+item.banner+'),url(assets/images/placeholder.jpg)'}">
+          </div>
+        </swiper-slide>
+      </swiper-container>
+
+      <swiper-container slides-per-view="1.2" speed="500" loop="false" css-mode="true" space-between="10">
+        <swiper-slide *ngFor="let item of dummy">
+          <ion-skeleton-text animated style="width: 100%;height: 100px;margin-left: 10px;border-radius: 5px;">
+          </ion-skeleton-text>
+        </swiper-slide>
+      </swiper-container>
+
+      <div *ngFor="let item of dummy">
+        <ion-list>
+          <ion-item>
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <h3>
+                <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+      <div class="card_div">
+        <ion-row [className]="item.isOpen == false  ? 'card-closed ion-no-padding':'card ion-no-padding'"
+          *ngFor="let item of list">
+          <ion-col size="4">
+            <div class="image_div" (click)="openMenu(item)"
+              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/images/placeholder.jpg)'}">
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="desc_div" (click)="openMenu(item)">
+              <ion-label class="heading_lbl">
+                {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
+              </ion-label>
+              <ion-label class="small_lbl">
+                {{ (item.descriptions.length>30)? (item.descriptions | slice:0:30)+'..':(item.descriptions) }}
+              </ion-label>
+              <ion-label class="small_lbl">{{ (item.cusine.length>30)? (item.cusine | slice:0:30)+'..':(item.cusine) }}
+              </ion-label>
+              <ion-label class="small_lbl">
+                <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{item.dish}}
+                </span>
+                <span *ngIf="util.appSettings.currencySide == 'right'">{{item.dish}} {{util.appSettings.currencySymbol}}
+                </span>
+                {{util.translate('per person')}} | {{item.time}}
+                {{util.translate('min')}}
+              </ion-label>
+            </div>
+          </ion-col>
+          <ion-col size="2">
+            <div class="ratting">
+              <ion-label class="rateNumber">{{item.rating}}</ion-label>
+            </div>
+            <p class="closed" *ngIf="item && item.isOpen == false ">
+              {{util.translate('Closed')}}
+            </p>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+
+    <div *ngIf="util.appSettings.home_ui == 1" class="main_content_div2">
+      <swiper-container slides-per-view="1.2" speed="500" loop="false" css-mode="true" space-between="10">
+        <swiper-slide *ngFor="let item of banners;" (click)="openOffers(item)">
+          <div class="back_image"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+item.banner+'),url(assets/images/placeholder.jpg)'}">
+          </div>
+        </swiper-slide>
+      </swiper-container>
+
+      <swiper-container slides-per-view="1.2" speed="500" loop="false" css-mode="true" space-between="10">
+        <swiper-slide *ngFor="let item of dummy">
+          <ion-skeleton-text animated style="width: 100%;height: 100px;margin-left: 10px;border-radius: 5px;">
+          </ion-skeleton-text>
+        </swiper-slide>
+      </swiper-container>
+      <ion-card *ngFor="let item of dummy">
+        <ion-skeleton-text animated
+          style="width: 100%;height: 150px;border-radius: 5px;border-bottom-right-radius: 0px;border-bottom-left-radius: 0px;">
+        </ion-skeleton-text>
+        <ion-card-content>
+          <ion-badge class="number_badge" color="light" mode="ios">
+            <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+          </ion-badge>
+          <ion-label class="bold_lbl">
+            <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+          </ion-label>
+          <ion-label class="small_lbl">
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </ion-label>
+          <div class="flex_div">
+            <ion-label class="distance_lbl">
+              <ion-skeleton-text animated style="width: 25px"></ion-skeleton-text>
+            </ion-label>
+          </div>
+        </ion-card-content>
+      </ion-card>
+      <ion-card *ngFor="let item of list" (click)="openMenu(item)">
+        <div class="image_back"
+          [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/images/placeholder.jpg)'}">
+        </div>
+        <ion-card-content>
+          <ion-badge class="number_badge" mode="ios"
+            [ngStyle]="{'background-color': item.rating>=4?'#00a573':item.rating>=3 && item.rating<1?'#fcb813':'#d24141'}">
+            {{item.rating}}</ion-badge>
+          <ion-label class="bold_lbl">{{item.name}}</ion-label>
+          <ion-label class="small_lbl">{{ (item.cusine.length>30)? (item.cusine | slice:0:30)+'..':(item.cusine) }}
+          </ion-label>
+          <div class="flex_div">
+            <ion-label class="distance_lbl">
+              {{ (item.descriptions.length>80)? (item.descriptions | slice:0:80)+'..':(item.descriptions) }}
+            </ion-label>
+            <ion-label class="distance_lbl2">
+              <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{item.dish}}
+              </span>
+              <span *ngIf="util.appSettings.currencySide == 'right'">{{item.dish}} {{util.appSettings.currencySymbol}}
+              </span>
+              {{util.translate('per person')}} |
+              {{item.time}} {{util.translate('min')}}
+            </ion-label>
+          </div>
+
+          <ion-badge class="storeTime" *ngIf="item && item.isOpen == false " mode="ios"
+            [ngStyle]="{'background-color': '##F53747'}">
+            {{util.translate('Closed')}}
+          </ion-badge>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div *ngIf="util.appSettings.home_ui == 2" class="main_content_div3">
+      <swiper-container slides-per-view="1.2" speed="500" loop="false" css-mode="true" space-between="10">
+        <swiper-slide *ngFor="let item of banners;" (click)="openOffers(item)">
+          <div class="back_image"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+item.banner+'),url(assets/images/placeholder.jpg)'}">
+          </div>
+        </swiper-slide>
+      </swiper-container>
+
+      <swiper-container slides-per-view="1.2" speed="500" loop="false" css-mode="true" space-between="10">
+        <swiper-slide *ngFor="let item of dummy">
+          <ion-skeleton-text animated style="width: 100%;height: 100px;margin-left: 10px;border-radius: 5px;">
+          </ion-skeleton-text>
+        </swiper-slide>
+      </swiper-container>
+      <ion-row *ngFor="let item of dummy">
+        <ion-col size="4">
+          <ion-skeleton-text animated style="width: 100px;height:100px;"></ion-skeleton-text>
+        </ion-col>
+        <ion-col size="8">
+          <p>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngFor="let item of list" class="main_div" (click)="openMenu(item)">
+        <ion-col size="4" class="image_back"
+          [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/images/placeholder.jpg)'}"></ion-col>
+        <ion-col size="8">
+          <ion-label class="heading_lbl">
+            {{ (item.name.length>30)? (item.name | slice:0:30)+'..':(item.name) }}
+          </ion-label>
+
+          <ion-label class="small_lbl"> {{ (item.cusine.length>30)? (item.cusine | slice:0:30)+'..':(item.cusine) }}
+          </ion-label>
+          <div class="more_data">
+            <div class="information">
+              <ion-icon name="star-outline"></ion-icon>
+              <ion-label class="lbl">
+                {{item.rating}}
+              </ion-label>
+            </div>
+            <div class="information">
+              <ion-icon name="time-outline"></ion-icon>
+              <ion-label class="lbl">
+                {{item.time}} {{util.translate('MINS')}}
+              </ion-label>
+            </div>
+            <div class="information">
+              <ion-icon name="cash-outline"></ion-icon>
+              <ion-label class="lbl">
+                <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}} {{item.dish}}
+                </span>
+                <span *ngIf="util.appSettings.currencySide == 'right'">{{item.dish}} {{util.appSettings.currencySymbol}}
+                </span>
+                {{util.translate('Per Person')}}
+              </ion-label>
+            </div>
+          </div>
+          <ion-label class="clbl" *ngIf="item && item.isOpen == false ">
+            {{util.translate('Closed')}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</ion-content>

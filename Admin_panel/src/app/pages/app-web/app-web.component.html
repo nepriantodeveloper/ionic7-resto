@@ -1,0 +1,171 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          {{util.translate('App Information')}}
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <label>{{util.translate('App Name')}}</label>
+              <input type="text" [(ngModel)]="name" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('App Name')" [class]="submited && name =='' ? 'req':''">
+            </div>
+            <div class="col-sm-6">
+              <label>{{util.translate('Contact No')}}</label>
+              <input type="number" [(ngModel)]="mobile" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Contact No')" [class]="submited && mobile =='' ? 'req':''">
+            </div>
+            <div class="col-sm-6">
+              <label>{{util.translate('Contact Email')}}</label>
+              <input type="email" [(ngModel)]="email" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Contact Email')" [class]="submited && email =='' ? 'req':''">
+            </div>
+            <div class="col-sm-6">
+              <label>{{util.translate('Address')}}</label>
+              <input type="text" [(ngModel)]="address" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Address')" [class]="submited && address =='' ? 'req':''">
+            </div>
+            <div class="col-sm-6">
+              <label>{{util.translate('City')}}</label>
+              <input type="text" [(ngModel)]="city" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('City')" [class]="submited && city =='' ? 'req':''">
+            </div>
+            <div class="col-sm-6">
+              <label>{{util.translate('State')}}</label>
+              <input type="text" [(ngModel)]="state" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('State')" [class]="submited && state =='' ? 'req':''">
+            </div>
+            <div class="col-sm-6">
+              <label>{{util.translate('Zip')}}</label>
+              <input type="number" [(ngModel)]="zip" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Zip')" [class]="submited && zip =='' ? 'req':''">
+            </div>
+            <div class="col-sm-6">
+              <label>{{util.translate('Country')}}</label>
+              <input type="text" [(ngModel)]="country" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Country')" [class]="submited && country =='' ? 'req':''">
+            </div>
+          </div>
+        </div>
+
+        <div class="card-header">
+          {{util.translate('Orders Information')}}
+        </div>
+
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <label>{{util.translate('Minimum Order')}}</label>
+              <input type="number" [(ngModel)]="min" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Minimum Order')" [class]="submited && min =='' ? 'req':''">
+            </div>
+
+            <div class="col-sm-6">
+              <label>{{util.translate('Free Shipping on order price')}}</label>
+              <input type="number" [(ngModel)]="free" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Free Shipping on order price')"
+                [class]="submited && free =='' ? 'req':''">
+            </div>
+
+            <div class="col-sm-6">
+              <label>{{util.translate('Order Tax')}}</label>
+              <input type="number" [(ngModel)]="tax" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Order Tax')" [class]="submited && tax =='' ? 'req':''">
+            </div>
+
+            <div class="col-sm-6">
+              <label>{{util.translate('Shipping Price')}} </label>
+              <select name="select" [(ngModel)]="shipping" class="form-control" [ngModelOptions]="{standalone: true}">
+                <option value="fixed">{{util.translate('Fixed')}}</option>
+                <option value="km">{{util.translate('Per KM')}}</option>
+              </select>
+            </div>
+
+            <div class="col-sm-6" *ngIf="shipping =='fixed'">
+              <label>{{util.translate('Fixed price')}}</label>
+              <input type="number" [(ngModel)]="shippingPrice" class="form-control"
+                [ngModelOptions]="{standalone: true}" [placeholder]="util.translate('Fixed price')"
+                [class]="submited && shippingPrice =='' ? 'req':''">
+            </div>
+
+            <div class="col-sm-6" *ngIf="shipping =='km'">
+              <label>{{util.translate('Per KM price')}}</label>
+              <input type="number" [(ngModel)]="shippingPrice" class="form-control"
+                [ngModelOptions]="{standalone: true}" [class]="submited && shippingPrice =='' ? 'req':''"
+                [placeholder]="util.translate('Per KM price')">
+            </div>
+
+            <div class="col-sm-6">
+              <label>{{util.translate('Allow Delivery Distance')}}</label>
+              <input type="number" [(ngModel)]="allowDistance" class="form-control"
+                [class]="submited && allowDistance =='' ? 'req':''" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Allow Delivery Distance')">
+            </div>
+          </div>
+        </div>
+
+        <div class="card-header">
+          {{util.translate('Social Links Information')}}
+        </div>
+
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <label>{{util.translate('Footer descriptions')}}</label>
+              <textarea rows="5" cols="5" [(ngModel)]="web_footer" class="form-control"
+                [class]="submited && web_footer =='' ? 'req':''" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Footer descriptions')"></textarea>
+            </div>
+            <div class="col-sm-6">
+              <label>{{util.translate('Facebook Link')}}</label>
+              <input type="text" [(ngModel)]="facebook" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Facebook Link')" [class]="submited && facebook =='' ? 'req':''">
+            </div>
+
+            <div class="col-sm-6">
+              <label>{{util.translate('Instagram Link')}}</label>
+              <input type="text" [(ngModel)]="instagram" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Instagram Link')" [class]="submited && instagram =='' ? 'req':''">
+            </div>
+
+            <div class="col-sm-6">
+              <label>{{util.translate('Twitter Link')}}</label>
+              <input type="text" [(ngModel)]="twitter" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Twitter Link')" [class]="submited && twitter =='' ? 'req':''">
+            </div>
+
+            <div class="col-sm-6">
+              <label>{{util.translate('Google playstore Link')}}</label>
+              <input type="text" [(ngModel)]="google_playstore" class="form-control"
+                [class]="submited && google_playstore =='' ? 'req':''" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Playstore Link')">
+            </div>
+
+            <div class="col-sm-6">
+              <label>{{util.translate('Apple Appstore Link')}}</label>
+              <input type="text" [(ngModel)]="apple_appstore" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Apple Appstore Link')"
+                [class]="submited && apple_appstore =='' ? 'req':''">
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button type="button" class="btn btn-success" (click)="saveSettings()">
+            {{util.translate('Submit')}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,2 @@
+id,first_name,last_name,email,password,gender,city,address,lat,lng,country_code,mobile,status,cover,current,others,date,fcm_token,extra_field
+1,Johny,Doe,john@initappz.com,$2y$10$Ll6P8KL5fCcV.E.3LxjY..0WiogaVKgPSK1w6QM9B3iaMHQC1XdpS,1,1,"Paras Colony, Palitana, Gujarat 364270, India",21.5362329,71.82896710000001,+91,123456780,1,delivery-boy.png,busy,,2020-10-04,0d662e65-c163-416f-80aa-7585cb46da9c,

@@ -1,0 +1,52 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border" mode="ios">
+  <ion-toolbar mode="ios" color="primary">
+    <ion-title>{{util.translate('Select Cuisine')}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar mode="ios">
+    <ion-searchbar [placeholder]="util.translate('Search')" inputmode="text" type="text" (ionChange)="search($event)"
+      style="margin-top: 10px;" mode="ios"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="isLoaded == false">
+    <ion-item *ngFor="let item of [1,2,3,4,5,6,7]">
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </div>
+  <div *ngIf="isLoaded == true">
+    <ion-item *ngFor="let item of list">
+      <ion-label>{{item.name}}</ion-label>
+      <ion-checkbox slot="start" [checked]="savedCusine.includes(item.name)"
+        (ionChange)="onCheckChange(item.name)"></ion-checkbox>
+    </ion-item>
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" color="primary">
+    <ion-fab-button (click)="onSave()">
+      <ion-icon name="checkmark-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -1,0 +1,35 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-tabs>
+
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="home">
+      <ion-icon aria-hidden="true" name="fast-food-outline"></ion-icon>
+      <ion-label>{{util.translate("Home")}}</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="history">
+      <ion-icon aria-hidden="true" name="reader-outline"></ion-icon>
+      <ion-label>{{util.translate("History")}}</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="cart">
+      <ion-icon aria-hidden="true" name="cart-outline"></ion-icon>
+      <ion-label>{{util.translate("Cart")}}</ion-label>
+      <ion-badge *ngIf="cart.cart?.length"> {{cart.totalItem}} </ion-badge>
+    </ion-tab-button>
+
+    <ion-tab-button tab="account">
+      <ion-icon aria-hidden="true" name="person-outline"></ion-icon>
+      <ion-label>{{util.translate("Account")}}</ion-label>
+    </ion-tab-button>
+
+  </ion-tab-bar>
+
+</ion-tabs>

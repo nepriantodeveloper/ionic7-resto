@@ -1,0 +1,140 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border" mode="ios">
+  <ion-toolbar color="primary" mode="ios">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Venue Profile')}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="venue-profile-screen">
+    <p class="lbl">{{util.translate('Restaurant Name')}}</p>
+    <ion-input class="inputText" [(ngModel)]="name" type="text"
+      [placeholder]="util.translate('Enter your restaurant name')"></ion-input>
+    <p class="lbl">{{util.translate('Restaurant Locations')}}</p>
+    <ion-textarea class="inputText" [(ngModel)]="address" rows="5"
+      [placeholder]="util.translate('Enter your restaurant address')">
+    </ion-textarea>
+
+    <p class="lbl">{{util.translate('Per Person Dish')}} </p>
+    <ion-input class="inputText" [(ngModel)]="dish" type="number"></ion-input>
+
+
+    <p class="lbl">{{util.translate('Opening Time')}}</p>
+    <ion-item lines="none" class="ion-no-padding">
+      <ion-input [(ngModel)]="open_time" display-format="hh:mm A" [placeholder]="util.translate('Selecte time')"
+        type="time"></ion-input>
+    </ion-item>
+
+    <p class="lbl">{{util.translate('Closing Time')}}</p>
+    <ion-item lines="none" class="ion-no-padding">
+      <ion-input [(ngModel)]="close_time" display-format="hh:mm A" [placeholder]="util.translate('Selecte time')"
+        type="time"></ion-input>
+    </ion-item>
+
+
+    <p class="lbl">{{util.translate('Estimated Delivery time')}}</p>
+    <ion-input class="inputText" [(ngModel)]="time" type="number"
+      [placeholder]="util.translate('Estimated Delivery time')"></ion-input>
+
+    <p class="lbl">{{util.translate('Restaurant Description')}}</p>
+    <ion-textarea class="inputText" [(ngModel)]="descriptions" rows="5"
+      [placeholder]="util.translate('Enter your restaurant description')">
+    </ion-textarea>
+    <ion-item lines="none" style="margin-top: 10px;" (click)="openCusinesList()">
+      <ion-label>{{util.translate('Select Cuisine')}}</ion-label>
+    </ion-item>
+    <div class="cusine-list" (click)="openCusinesList()">
+      <ion-label class="cusine-lbl" *ngFor="let item of cusine"> {{item}} </ion-label>
+    </div>
+    <p class="lbl">{{util.translate('Upload Your Restaurant Cover Image')}}</p>
+    <div class="coverPlaceholder" (click)="uploadCover()" *ngIf="!cover || cover ==''">
+      <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+      <p>{{util.translate('Upload your')}} <br> {{util.translate('cover image here')}}</p>
+    </div>
+    <div class="coverReal" (click)="uploadCover()"
+      [ngStyle]="{'background-image':'url('+api.mediaURL+cover+'),url(assets/images/placeholder.jpg)'}"
+      *ngIf="cover && cover !=''">
+    </div>
+    <p class="lbl">{{util.translate('Upload Gallery Images')}}</p>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4" class="ion-no-margin ion-no-padding">
+          <div class="galleryPlaceholder" (click)="others('1')" *ngIf="!image1 || image1 ==''">
+            <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+            <p>{{util.translate('Image 1')}}</p>
+          </div>
+          <div class="galleryReal" (click)="others('1')"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+image1+'),url(assets/placeholder.jpg)'}"
+            *ngIf="image1 && image1 !=''">
+          </div>
+        </ion-col>
+        <ion-col size="4" class="ion-no-margin ion-no-padding">
+          <div class="galleryPlaceholder" (click)="others('2')" *ngIf="!image2 || image2 ==''">
+            <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+            <p>{{util.translate('Image 2')}}</p>
+          </div>
+          <div class="galleryReal" (click)="others('2')"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+image2+'),url(assets/placeholder.jpg)'}"
+            *ngIf="image2 && image2 !=''">
+          </div>
+        </ion-col>
+        <ion-col size="4" class="ion-no-margin ion-no-padding">
+          <div class="galleryPlaceholder" (click)="others('3')" *ngIf="!image3 || image3 ==''">
+            <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+            <p>{{util.translate('Image 3')}}</p>
+          </div>
+          <div class="galleryReal" (click)="others('3')"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+image3+'),url(assets/placeholder.jpg)'}"
+            *ngIf="image3 && image3 !=''">
+          </div>
+        </ion-col>
+        <ion-col size="4" class="ion-no-margin ion-no-padding">
+          <div class="galleryPlaceholder" (click)="others('4')" *ngIf="!image4 || image4 ==''">
+            <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+            <p>{{util.translate('Image 4')}}</p>
+          </div>
+          <div class="galleryReal" (click)="others('4')"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+image4+'),url(assets/placeholder.jpg)'}"
+            *ngIf="image4 && image4 !=''">
+          </div>
+        </ion-col>
+        <ion-col size="4" class="ion-no-margin ion-no-padding">
+          <div class="galleryPlaceholder" (click)="others('5')" *ngIf="!image5 || image5 ==''">
+            <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+            <p>{{util.translate('Image 5')}}</p>
+          </div>
+          <div class="galleryReal" (click)="others('5')"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+image5+'),url(assets/placeholder.jpg)'}"
+            *ngIf="image5 && image5 !=''">
+          </div>
+        </ion-col>
+        <ion-col size="4" class="ion-no-margin ion-no-padding">
+          <div class="galleryPlaceholder" (click)="others('6')" *ngIf="!image6 || image6 ==''">
+            <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+            <p>{{util.translate('Image 6')}}</p>
+          </div>
+          <div class="galleryReal" (click)="others('6')"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+image6+'),url(assets/placeholder.jpg)'}"
+            *ngIf="image6 && image6 !=''">
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-button (click)="submit()" expand="block">
+      {{util.translate('Submit')}}
+    </ion-button>
+
+  </div>
+</ion-content>

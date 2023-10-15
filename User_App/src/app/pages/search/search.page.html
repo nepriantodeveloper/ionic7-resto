@@ -1,0 +1,128 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border">
+  <ion-toolbar mode="ios" color="primary">
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate("Search Restaurants")}}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar mode="ios">
+    <ion-searchbar [placeholder]="util.translate('Search restaurants..')" mode="ios" inputmode="text" type="text"
+      style="margin-top:10px;" [debounce]="250" (ionChange)="onSearchChange($event)"
+      showCancelButton="always"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="home-screen">
+    <div *ngIf="util.appSettings.home_ui == 0" class="main_content_div1">
+      <div class="card_div">
+        <ion-row [className]="item.isOpen == false  ? 'card-closed ion-no-padding':'card ion-no-padding'"
+          *ngFor="let item of list">
+          <ion-col size="4">
+            <div class="image_div" (click)="openMenu(item)"
+              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/images/placeholder.jpg)'}">
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="desc_div" (click)="openMenu(item)">
+              <ion-label class="heading_lbl">
+                {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
+              </ion-label>
+              <ion-label class="small_lbl">
+                {{ (item.descriptions.length>30)? (item.descriptions | slice:0:30)+'..':(item.descriptions) }}
+              </ion-label>
+              <ion-label class="small_lbl">{{ (item.cusine.length>30)? (item.cusine | slice:0:30)+'..':(item.cusine) }}
+              </ion-label>
+              <ion-label class="small_lbl">{{item.dish}} {{util.translate('per person')}} | {{item.time}}
+                {{util.translate('min')}} </ion-label>
+            </div>
+          </ion-col>
+          <ion-col size="2">
+            <div class="ratting">
+              <ion-label class="rateNumber">{{item.rating}}</ion-label>
+            </div>
+            <p class="closed" *ngIf="item && item.isOpen == false ">
+              {{util.translate('Closed')}}
+            </p>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+
+    <div *ngIf="util.appSettings.home_ui == 1" class="main_content_div2">
+      <ion-card *ngFor="let item of list" (click)="openMenu(item)">
+        <div class="image_back"
+          [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/images/placeholder.jpg)'}">
+        </div>
+        <ion-card-content>
+          <ion-badge class="number_badge" mode="ios"
+            [ngStyle]="{'background-color': item.rating>=4?'#00a573':item.rating>=3 && item.rating<1?'#fcb813':'#d24141'}">
+            {{item.rating}}</ion-badge>
+          <ion-label class="bold_lbl">{{item.name}}</ion-label>
+          <ion-label class="small_lbl">{{ (item.cusine.length>30)? (item.cusine | slice:0:30)+'..':(item.cusine) }}
+          </ion-label>
+          <div class="flex_div">
+            <ion-label class="distance_lbl">
+              {{ (item.descriptions.length>80)? (item.descriptions | slice:0:80)+'..':(item.descriptions) }}
+            </ion-label>
+            <ion-label class="distance_lbl2">
+              {{item.dish}} {{util.translate('per person')}} | {{item.time}} {{util.translate('min')}}
+            </ion-label>
+          </div>
+
+          <ion-badge class="storeTime" *ngIf="item && item.isOpen == false " mode="ios"
+            [ngStyle]="{'background-color': '##F53747'}">
+            {{util.translate('Closed')}}
+          </ion-badge>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div *ngIf="util.appSettings.home_ui == 2" class="main_content_div3">
+      <ion-row *ngFor="let item of list" class="main_div" (click)="openMenu(item)">
+        <ion-col size="4" class="image_back"
+          [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/images/placeholder.jpg)'}"></ion-col>
+        <ion-col size="8">
+          <ion-label class="heading_lbl">
+            {{ (item.name.length>30)? (item.name | slice:0:30)+'..':(item.name) }}
+          </ion-label>
+
+          <ion-label class="small_lbl"> {{ (item.cusine.length>30)? (item.cusine | slice:0:30)+'..':(item.cusine) }}
+          </ion-label>
+          <div class="more_data">
+            <div class="information">
+              <ion-icon name="star-outline"></ion-icon>
+              <ion-label class="lbl">
+                {{item.rating}}
+              </ion-label>
+            </div>
+            <div class="information">
+              <ion-icon name="time-outline"></ion-icon>
+              <ion-label class="lbl">
+                {{item.time}} {{util.translate('MINS')}}
+              </ion-label>
+            </div>
+            <div class="information">
+              <ion-icon name="cash-outline"></ion-icon>
+              <ion-label class="lbl">
+                {{item.dish}} {{util.translate('Per Person')}}
+              </ion-label>
+            </div>
+          </div>
+          <ion-label class="clbl" *ngIf="item && item.isOpen == false ">
+            {{util.translate('Closed')}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</ion-content>

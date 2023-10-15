@@ -1,0 +1,59 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" mode="ios">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Select Restaurant')}}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar mode="ios">
+    <ion-searchbar [placeholder]="util.translate('Search by restaurant')" mode="ios" style="margin-top: 10px;"
+      (ionChange)="onSearchChange($event)" [debounce]="250" showCancelButton="never"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="review-restaurant-list">
+    <div *ngFor="let item of dummy">
+      <ion-list>
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>
+              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div class="card_div" *ngFor="let item of restaurants" (click)="goToAddReview(item)">
+      <div class="resto_detail">
+        <img [src]="api.mediaURL+item.cover" onError="this.src='assets/placeholder.jpg'" class="back_image" alt="">
+        <div style="padding-left: 20px;">
+          <ion-label class="res_name">{{item.name}}</ion-label>
+          <ion-label class="res_location">{{item.address}}</ion-label>
+        </div>
+      </div>
+      <div class="line_div"></div>
+    </div>
+
+  </div>
+</ion-content>

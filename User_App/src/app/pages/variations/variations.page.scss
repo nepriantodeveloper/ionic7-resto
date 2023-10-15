@@ -1,0 +1,108 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+*/
+.padder {
+  padding-bottom: 60px;
+
+  .head-title {
+    font-size: 14px;
+    font-family: 'semi-bold';
+    color: var(--ion-color-dark);
+    text-transform: capitalize;
+  }
+
+  .sub-item-left-lbl {
+    text-align: left;
+    font-size: 12px;
+    font-family: 'semi-bold';
+    color: var(--ion-color-dark);
+    text-transform: capitalize;
+  }
+
+  .sub-item-right-lbl {
+    text-align: right;
+    font-size: 12px;
+    font-family: 'semi-bold';
+    color: var(--ion-color-dark);
+    text-transform: capitalize;
+  }
+}
+
+.cartItems {
+  padding: 10px 16px;
+
+  .name {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0px;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .names {
+      .subDetails {
+        margin: 0px;
+        font-size: 12px;
+      }
+    }
+
+    .cartBtn2 {
+      position: absolute;
+      right: 15px;
+      width: 80px;
+      display: flex;
+      background: var(--ion-color-light);
+
+      .qunitity {
+        font-weight: bold;
+        margin-top: 8px;
+      }
+    }
+  }
+}
+
+.sameProduct {
+  padding: 5px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .desc {
+    padding: 0px 0px 10px 0px;
+
+    .name {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 0px;
+    }
+
+    .selectedItem {
+      margin: 0px;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cartBtn2 {
+      position: absolute;
+      right: 15px;
+      width: 80px;
+      display: flex;
+      background: var(--ion-color-light);
+
+      .qunitity {
+        font-weight: bold;
+        margin-top: 8px;
+      }
+    }
+  }
+}

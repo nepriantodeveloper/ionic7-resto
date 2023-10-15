@@ -1,0 +1,89 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          {{util.translate('All Foods')}}
+          <div class="card-header-actions" style="display: flex;flex-direction: row;justify-content: flex-start;">
+            <button type="submit" class="btn btn-sm btn-primary" style="float: right;margin: 0px 5px;width: 100%;"
+              (click)="addNew()">
+              {{util.translate('Add New')}}
+            </button> &nbsp;
+            <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="cateId"
+              (change)="segmentChanged()">
+              <option value="delivered" *ngFor="let item of categories;" [value]="item.id"> {{item.name}} </option>
+            </select>
+          </div>
+        </div>
+        <div class="card-body">
+
+          <div class="error_div" *ngIf="categories?.length <= 0 && dummyCategories?.length <= 0 && foods?.length <= 0">
+            <label>{{util.translate('No Data Found..')}}</label>
+          </div>
+
+          <table class="table table-responsive-sm table-hover mb-0">
+            <thead *ngIf="foods?.length > 0">
+              <tr>
+                <th>{{util.translate('Id')}}</th>
+                <th>{{util.translate('Cover')}}</th>
+                <th>{{util.translate('Name')}}</th>
+                <th>{{util.translate('Price')}}</th>
+                <th>{{util.translate('Rating')}}</th>
+                <th>{{util.translate('Action')}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dummyFoods">
+                <td *ngFor="let item of [1,2,3,4]">
+                  <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
+                </td>
+              </tr>
+              <tr *ngFor="let item of foods | paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page }">
+                <td>{{item.id}} </td>
+                <td>
+                  <img class="img-responsive" style="height: 20px;width: 20px; object-fit: cover;"
+                    [src]="api.imageUrl + item.cover" onError="this.src='assets/img/dummy.jpeg'">
+                </td>
+                <td>{{item.name}}</td>
+                <td>
+                  <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                    {{item.price}}</span>
+                  <span *ngIf="util.appSettings.currencySide == 'right'">{{item.price}}
+                    {{util.appSettings.currencySymbol}}</span>
+                </td>
+                <td>{{item.rating}}</td>
+                <td>
+                  <c-badge [color]="item.status == 1 ? 'success' :'dark'"
+                    [class]="item.status == 1 ? 'me-1 badge bg-success' :'me-1 badge bg-dark' "
+                    (click)="hideStatus(item)">
+                    {{item.status == 1 ?util.translate('Active'): util.translate('Deactived')}}
+                  </c-badge>
+                  <c-badge color="primary" class="me-1 badge bg-primary" (click)="getProduct(item.id)">
+                    {{util.translate('Views')}}
+                  </c-badge>
+                  <c-badge color="danger" class="me-1 badge bg-danger" (click)="deleteItem(item)">
+                    {{util.translate('Delete')}}
+                  </c-badge>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div *ngIf="foods?.length > 0">
+            <pagination-controls id="pagin1" (pageChange)="page = $event"></pagination-controls>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

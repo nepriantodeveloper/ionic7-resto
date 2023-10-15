@@ -1,0 +1,26 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" mode="ios">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon slot="icon-only" name="chevron-back" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="apiCalled == false"
+    style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+    <ion-spinner color="primary" name="crescent"></ion-spinner>
+  </div>
+  <p [innerHTML]="content" *ngIf="apiCalled == true"></p>
+</ion-content>

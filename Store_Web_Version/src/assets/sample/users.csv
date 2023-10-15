@@ -1,0 +1,2 @@
+id,first_name,last_name,email,password,gender,type,status,lat,lng,cover,country_code,mobile,verified,fcm_token,others,date,stripe_key,extra_field
+1,Rahul,Jograna,rahul@initappz.com,$2y$10$kefgTa0fNdyxLxT1zbOUOu0se6qVSjSuIQ0VoP9allPF8d1meXrM6,1,admin,1,0,0,NA,+91,9426585554,1,NA,1,2020-10-03,,

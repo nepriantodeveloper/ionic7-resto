@@ -1,0 +1,62 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" mode="ios">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="rest-details-screen">
+    <div class="upper_div">
+
+      <div class="back_image"
+        [ngStyle]="{'background-image':'url('+api.mediaURL+cover+'),url(assets/images/placeholder.jpg)'}">
+
+        <div class="open_div" *ngIf="isOpen">{{util.translate('open')}}</div>
+        <div class="close_div" *ngIf="!isOpen">{{util.translate('Closed')}}</div>
+        <ion-badge class="menu_badge"
+          [ngStyle]="{'background-color': ratting>=4?'#00a573':ratting>=3 && ratting<3.5?'#fcb813':'#d24141'}"
+          mode="ios">
+          {{ratting}}</ion-badge>
+
+        <div class="abs_div">
+          <ion-label class="bold_lbl">{{name}}</ion-label>
+          <ion-label class="small_lbl">{{cusine}}</ion-label>
+        </div>
+      </div>
+
+      <div class="content_div">
+        <ion-label class="addr_lbl">
+          <ion-icon name="navigate-outline"></ion-icon> : {{address}}
+        </ion-label>
+        <ion-label class="addr_lbl">
+          <ion-icon name="alarm-outline"></ion-icon>: {{open}} : {{close}}
+        </ion-label>
+        <ion-label class="addr_lbl">
+          <ion-icon name="call-outline"></ion-icon>: {{phone}}
+        </ion-label>
+      </div>
+    </div>
+
+    <div class="slider_div">
+      <swiper-container slides-per-view="2.3" speed="500" loop="false" css-mode="true" space-between="10">
+        <swiper-slide *ngFor="let item of images">
+          <div class="slide_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item+')'}"></div>
+        </swiper-slide>
+      </swiper-container>
+    </div>
+    <ion-label class="desc">{{descritions}}</ion-label>
+  </div>
+</ion-content>

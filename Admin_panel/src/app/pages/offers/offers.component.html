@@ -1,0 +1,217 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          {{util.translate('Offers Information')}}
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <label>{{util.translate('Available on')}}</label>
+              <ng-multiselect-dropdown [placeholder]="util.translate('Select Restaurants')" maxHeight="100"
+                [data]="dropdownList" [(ngModel)]="selectedItems" [settings]="dropdownSettings">
+              </ng-multiselect-dropdown>
+            </div>
+
+            <div class="col-sm-12">
+              <label>{{util.translate('Coupon code')}}</label>
+              <input type="text" [(ngModel)]="name" class="form-control" [placeholder]="util.translate('Coupon code')"
+                [ngModelOptions]="{standalone: true}" [class]="submited && name =='' ? 'req':''">
+            </div>
+
+            <div class="col-sm-12">
+              <label>{{util.translate('Discount')}}</label>
+              <input type="number" [(ngModel)]="off" class="form-control" [placeholder]="util.translate('Discount')"
+                [ngModelOptions]="{standalone: true}" [class]="submited && off =='' ? 'req':''">
+            </div>
+
+            <div class="col-sm-12">
+              <label>{{util.translate('Minimum cart value')}}</label>
+              <input type="number" [(ngModel)]="min" class="form-control"
+                [placeholder]="util.translate('Minimum cart value')" [ngModelOptions]="{standalone: true}"
+                [class]="submited && min =='' ? 'req':''">
+            </div>
+
+            <div class="col-sm-12">
+              <label>{{util.translate('Upto')}}</label>
+              <input type="number" [(ngModel)]="upto" class="form-control" [placeholder]="util.translate('Upto')"
+                [ngModelOptions]="{standalone: true}" [class]="submited && upto =='' ? 'req':''">
+            </div>
+
+            <div class="col-sm-12">
+              <label>{{util.translate('Discount Type')}}</label>
+              <select name="select" [(ngModel)]="type" class="form-control" [ngModelOptions]="{standalone: true}"
+                [class]="submited && type =='' ? 'req':''">
+                <option value="per">%</option>
+                <option value="flat">{{util.translate('Flat')}}</option>
+              </select>
+            </div>
+
+            <div class="col-sm-12">
+              <label>{{util.translate('Expire date')}}</label>
+              <input type="date" [(ngModel)]="date_time" class="form-control" [ngModelOptions]="{standalone: true}"
+                [placeholder]="util.translate('Expire date')" [class]="submited && date_time =='' ? 'req':''">
+            </div>
+
+            <div class="col-sm-12">
+              <label>{{util.translate('Descriptions')}}</label>
+              <textarea rows="5" cols="5" [(ngModel)]="descriptions" class="form-control"
+                [ngModelOptions]="{standalone: true}" [placeholder]="util.translate('Descriptions')"
+                [class]="submited && descriptions =='' ? 'req':''"></textarea>
+            </div>
+
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="d-flex justify-content-start">
+                  <button *ngIf="isNew == true" type="button" class="btn btn-success" (click)="createOffer()">
+                    <span> {{util.translate("Save")}} </span>
+                  </button>
+                  <button *ngIf="isNew == false" type="button" class="btn btn-success" (click)="updateOffer()">
+                    <span> {{util.translate("Update")}} </span>
+                  </button> &nbsp;
+                  <button type="button" class="btn btn-secondary" (click)="cleanData()">{{util.translate("Clear")}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header">
+          {{util.translate('All Offers')}}
+          <div class="card-header-actions">
+            <button type="submit" class="btn btn-sm btn-warning" style="float: right;margin: 0px 5px;"
+              (click)="importCSV()">
+              {{util.translate('Bulk CSV Upload')}}
+            </button> &nbsp;
+            <button type="submit" (click)="exportCSV()" class="btn btn-sm btn-success"
+              style="float: right;margin: 0px 5px;">
+              {{util.translate('Export as CSV')}}
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row flex_row">
+            <div class="col-lg-12">
+              <input type="text" class="form-control form-control-lg" id="name"
+                [placeholder]="util.translate('Search Offer Code')" (input)="search($event.target.value)">
+            </div>
+          </div>
+
+          <div class="error_div" *ngIf="list?.length <= 0 && dummy?.length <= 0">
+            <label>{{util.translate('No Data Found..')}}</label>
+          </div>
+
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">{{util.translate('Id')}} </th>
+                <th scope="col">{{util.translate("Coupon code")}} </th>
+                <th scope="col">{{util.translate("Discount")}} </th>
+                <th scope="col">{{util.translate("Expire")}} </th>
+                <th scope="col">{{util.translate("Descriptions")}} </th>
+                <th scope="col">{{util.translate("Action")}} </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dummy">
+                <td *ngFor="let item of [1,2,3,4,5,6]">
+                  <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
+                </td>
+              </tr>
+              <tr
+                *ngFor="let item of list | paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
+                <th scope="row">
+                  {{item.id}}
+                </th>
+                <td>
+                  <label style="font-weight: bold;">
+                    {{item.code}}
+                  </label>
+                </td>
+                <td>
+                  <span>
+                    {{item.discount}} {{item.type == 'per' ? '%' : util.appSettings.currencySymbol}}
+                  </span>
+                </td>
+                <td>
+                  {{getDate(item.date_time)}}
+                </td>
+                <td style="width: 150px;white-space: pre-wrap;">
+                  {{item.details}}
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <c-badge [color]="item.status == 1?'success':'dark'"
+                      [class]="item.status == 1 ? 'me-1 badge bg-success':'me-1 badge bg-dark'"
+                      (click)="statusUpdate(item)">
+                      {{item.status == 1 ?util.translate('Active'):util.translate('Deactived')}}
+                    </c-badge>
+
+                    <c-badge color="info" class="me-1 badge bg-info" (click)="updateInfo(item)">
+                      {{ util.translate('View')}}
+                    </c-badge>
+
+                    <c-badge color="danger" class="me-1 badge bg-danger" (click)="deleteItem(item.id)">
+                      {{ util.translate('Delete')}}
+                    </c-badge>
+
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+          <div *ngIf="list?.length > 0">
+            <pagination-controls id="pagin1" (pageChange)="page = $event"></pagination-controls>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #myModal3="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-warning" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{util.translate('Bulk CSV Upload')}} </h5>
+        <button type="button" class="close" (click)="myModal3.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body long_content">
+        <div class="form-group row">
+          <div class="col-md-12">
+            <input (change)="uploadCSV($event.target.files)" type="file" id="file-input" name="file-input"
+              accept=".csv">
+          </div>
+        </div>
+        <button type="button" class="btn btn-warning" style="float: right;" (click)="downloadSample()">
+          {{util.translate('Download Sample CSV')}} &nbsp; <i class="fa fa-cloud-download"></i></button>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="myModal3.hide()">{{util.translate('Close')}}</button>
+
+        <button type="button" class="btn btn-warning" (click)="saveType()">
+          {{util.translate('Save Changes')}}</button>
+      </div>
+    </div>
+  </div>
+</div>

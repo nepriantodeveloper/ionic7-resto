@@ -1,0 +1,38 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border">
+  <ion-toolbar mode="ios" color="light">
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="location-screen">
+    <p class="header">{{util.translate('Access Your')}}</p>
+    <p class="subHeader">{{util.translate('Location')}}</p>
+    <img src="assets/images/map-location.png" alt="" class="imgs">
+    <ion-button (click)="onLocation()" expand="block" shape="round">
+      {{util.translate('Use Current Location')}}
+    </ion-button>
+    <ion-spinner *ngIf="isLoading == true" name="crescent" color="primary"></ion-spinner>
+    <ion-button (click)="chooseLocation()" expand="block" fill="clear" shape="round">
+      {{util.translate('Choose location')}}
+    </ion-button>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-label>{{util.translate("Languages")}}</ion-label>
+      <ion-select [(ngModel)]="selected" placeholder="Languages" interface="popover" (ionChange)="changed()">
+        <ion-select-option [value]="item.id" *ngFor="let item of util.languages">{{item.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,7 @@
+{
+  "name": "store_upgraded",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

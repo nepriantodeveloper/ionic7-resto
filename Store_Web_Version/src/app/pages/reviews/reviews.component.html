@@ -1,0 +1,92 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          {{util.translate('My Reviews')}}
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-6" *ngFor="let item of dummy">
+              <div class="dummy-orders">
+                <div class="fb-item">
+                  <div class="first-section-wrapper">
+                    <div class="gravatar">
+                      <ngx-skeleton-loader appearance="circle" [theme]="{ width: '80px', height: '80px' }">
+                      </ngx-skeleton-loader>
+                    </div>
+                    <div class="gravatar-title">
+                      <div>
+                        <ngx-skeleton-loader [theme]="{
+                            width: '200px',
+                            'border-radius': '0',
+                            height: '15px',
+                            'margin-bottom': '10px'
+                          }"></ngx-skeleton-loader>
+                      </div>
+                      <div>
+                        <ngx-skeleton-loader [theme]="{ width: '170px', 'border-radius': '0', height: '15px' }">
+                        </ngx-skeleton-loader>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="second-section-wrapper">
+                    <div class="wrapper">
+                      <ngx-skeleton-loader [theme]="{
+                          width: '80%',
+                          'border-radius': '0',
+                          height: '15px',
+                          'margin-bottom': '10px'
+                        }"></ngx-skeleton-loader>
+                    </div>
+                    <div class="wrapper">
+                      <ngx-skeleton-loader [theme]="{
+                          width: '90%',
+                          'border-radius': '0',
+                          height: '15px',
+                          'margin-bottom': '10px'
+                        }"></ngx-skeleton-loader>
+                    </div>
+                    <div class="wrapper">
+                      <ngx-skeleton-loader [theme]="{
+                          width: '60%',
+                          'border-radius': '0',
+                          height: '15px',
+                          'margin-bottom': '10px'
+                        }"></ngx-skeleton-loader>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6" *ngFor="let item of list ">
+              <div class="review-card">
+                <div class="back_image"
+                  [ngStyle]="{'background-image':'url('+api.imageUrl+item.cover+'),url(assets/img/dummy.jpeg)'}">
+                </div>
+
+                <div class="name-content">
+                  <p class="way">{{util.translate('Received From')}} {{item.way}} </p>
+                  <p class="name"> {{item.first_name}} {{item.last_name}} </p>
+                  <p class="message"> {{item.msg}} </p>
+                  <p class="date"> {{getDate(item.timestamp)}} </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

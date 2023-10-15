@@ -1,0 +1,212 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="animated fadeIn">
+  <div class="row mb-2">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          {{util.translate('Manage Product')}}
+
+        </div>
+        <div class="card-body">
+          <div class="row" *ngIf="isLoaded == false">
+            <div class="col-xl-12">
+              <div style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                <c-spinner color="primary"></c-spinner>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="isLoaded == true">
+            <div class="col-xl-12">
+              <div class="logoContainer">
+                <img [src]="api.imageUrl+ coverImage" onError="this.src='assets/img/dummy.jpeg'">
+              </div>
+              <div class="fileContainer sprite">
+                <span> {{util.translate('Add Cover')}} </span>
+                <input (change)="preview_banner($event.target.files)" type="file" value="Choose File">
+              </div>
+              <p class="text-heler">
+                {{util.translate('Files types accepted: .jpg, .jpeg, .png, .bmp recommended size (512 X 512) pixels')}}
+              </p>
+              <form cForm>
+                <div class="mb-3">
+                  <label cLabel for="cityForm">{{util.translate('Select Category')}}</label>
+                  <select aria-label="Select Category" cSelect id="cityForm" [(ngModel)]="cid"
+                    [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let item of categories" [value]="item.id">{{item.name}}</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label cLabel for="foodName">{{util.translate('Food Name')}}</label>
+                  <input cFormControl [(ngModel)]="name" [ngModelOptions]="{standalone: true}" id="foodName"
+                    [placeholder]="util.translate('Food Name')" type="text" />
+                </div>
+
+                <div class="mb-3">
+                  <label cLabel for="foodPrice">{{util.translate('Food Price')}}</label>
+                  <input cFormControl [(ngModel)]="price" [ngModelOptions]="{standalone: true}" id="foodPrice"
+                    [placeholder]="util.translate('Food Price')" type="text" />
+                </div>
+
+                <div class="mb-3">
+                  <label cLabel for="vegType">{{util.translate('Veg')}}</label>
+                  <select aria-label="Veg" cSelect id="vegType" [(ngModel)]="veg" [ngModelOptions]="{standalone: true}">
+                    <option [value]="1">{{util.translate('Veg')}}</option>
+                    <option [value]="0">{{util.translate('Non Veg')}}</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label cLabel for="descriptions">{{util.translate('Short descriptions')}}</label>
+                  <textarea cFormControl id="descriptions" rows="3" [placeholder]="util.translate('Short descriptions')"
+                    [(ngModel)]="descriptions" [ngModelOptions]="{standalone: true}"></textarea>
+                </div>
+
+                <div class="mb-3">
+                  <label cLabel for="Status">{{util.translate('Status')}}</label>
+                  <select aria-label="Status" cSelect id="Status" [(ngModel)]="status"
+                    [ngModelOptions]="{standalone: true}">
+                    <option [value]="1">{{util.translate('Available')}}</option>
+                    <option [value]="0">{{util.translate('Hide')}}</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label cLabel for="size">{{util.translate('Size?')}} ({{util.translate('Regular,Medium,Large')}}
+                    )</label>
+                  <select aria-label="size" cSelect id="size" [(ngModel)]="size" [ngModelOptions]="{standalone: true}"
+                    (change)="changeSize($event)">
+                    <option [value]="1">{{util.translate('Yes')}}</option>
+                    <option [value]="0">{{util.translate('No')}}</option>
+                  </select>
+                </div>
+
+                <div class="mb-3" (click)="addNew()">
+                  <label>{{util.translate('Add-ons')}} <span
+                      style="font-size: 10px !important;">{{util.translate('Extras,cold drinks')}}</span></label>
+                  <img src="assets/img/add.svg" alt="" style="height: 20px;width: 20px; margin: 0px 10px;">
+                </div>
+
+                <div class="col-sm-6">
+                  <div *ngFor="let item of variations;let i = index;">
+                    <div
+                      style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
+                      <label style="margin: 0px !important;font-weight: bold; font-size: 18px;">{{item.title}}</label>
+                      <img src="assets/img/add.svg" alt="" (click)="addItem(i)"
+                        style="height: 20px;width: 20px; margin: 0px 10px;">
+                      <img src="assets/img/remove.svg" alt="" (click)="delete(item)"
+                        style="height: 20px;width: 20px; margin: 0px 10px;">
+                    </div>
+                    <div *ngFor="let sub of item.items;let j = index"
+                      style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+                      <div
+                        style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+                        {{sub.title}} -
+                        <p style="margin: 0px !important;">
+                          <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                            {{sub.price}}</span>
+                          <span *ngIf="util.appSettings.currencySide == 'right'"> {{sub.price}}
+                            {{util.appSettings.currencySymbol}}</span>
+                        </p>
+
+                      </div>
+                      <img src="assets/img/edit.svg" alt="" (click)="editSub(i,sub,j)"
+                        style="height: 20px;width: 20px; margin: 0px 10px;">
+                      <img src="assets/img/remove.svg" alt="" (click)="deleteSub(i,sub)"
+                        style="height: 20px;width: 20px; margin: 0px 10px;">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button cButton color="primary" (click)="submit()">
+            {{util.translate('Submit')}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #newAddone="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{util.translate('Manage Addon')}} </h5>
+        <button type="button" class="close" (click)="newAddone.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <label>{{util.translate('Add-ons name')}}</label>
+            <input style="background: transparent !important;" [(ngModel)]="addonName" type="text" class="form-control"
+              [placeholder]="util.translate('Add-ons name')">
+          </div>
+
+          <div class="col-sm-12">
+            <label>{{util.translate('Add-ons Type')}}</label>
+            <select name="select" [(ngModel)]="addonType" class="form-control">
+              <option value='radio'>{{util.translate('Single Select')}}</option>
+              <option value='check'>{{util.translate('Multiple Select')}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="newAddone.hide()">{{util.translate('Close')}}</button>
+        <button type="button" class="btn btn-primary" (click)="addNewAddon()">
+          {{util.translate('Save')}}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #contentVarient="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{util.translate('Manage Addon')}} </h5>
+        <button type="button" class="close" (click)="contentVarient.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <label>{{util.translate('Add-ons name')}}</label>
+            <input style="background: transparent !important;" [(ngModel)]="variant_title" type="text"
+              class="form-control" [placeholder]="util.translate('Add-ons name')">
+          </div>
+
+          <div class="col-sm-12">
+            <label>{{util.translate('Add-ons price')}}</label>
+            <input style="background: transparent !important;" [(ngModel)]="variant_price" type="number"
+              class="form-control" [placeholder]="util.translate('Add-ons price')">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+          (click)="contentVarient.hide()">{{util.translate('Close')}}</button>
+        <button type="button" class="btn btn-primary" (click)="close3()">
+          {{util.translate('Save')}}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

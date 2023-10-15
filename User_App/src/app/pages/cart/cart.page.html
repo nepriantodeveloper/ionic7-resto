@@ -1,0 +1,184 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border">
+  <ion-toolbar mode="ios" color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="util.openMenu()">
+        <ion-icon slot="end" name="menu-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.translate('Cart')}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="cart-screen">
+    <div class="noData" *ngIf="!cart.cart?.length">
+      <img src="assets/images/runing.gif" alt="" class="noDataImg">
+      <ion-label>{{util.translate('Your Cart is Empty')}}</ion-label>
+      <ion-label>{{util.translate('Please add your favourite food')}}</ion-label>
+      <ion-button (click)="getCart()" expand="block" fill="outline">
+        {{util.translate('Browse your favourite restaurants')}}
+      </ion-button>
+    </div>
+    <div *ngIf="cart.cart?.length">
+      <ion-row style="padding-bottom: 10px; border-bottom: 1px solid lightgray;"
+        *ngIf="cart.cartStoreInfo && cart.cartStoreInfo.cover && cart.cart[0].restId == cart.cartStoreInfo.uid">
+        <ion-col size="4">
+          <div class="image_div"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+cart.cartStoreInfo.cover+'),url(assets/images/placeholder.jpg)'}">
+          </div>
+        </ion-col>
+        <ion-col size="8">
+          <ion-label class="restname">{{cart.cartStoreInfo.name}}</ion-label>
+          <ion-label class="address">{{cart.cartStoreInfo.address}}</ion-label>
+        </ion-col>
+      </ion-row>
+      <div class="card_div">
+        <div class="card" *ngFor="let item of cart.cart;let i = index">
+          <div class="mainCat" *ngIf="item.quantiy > 0 && !item.selectedItem?.length">
+            <div class="front-data">
+              <div class="image_div"
+                [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/images/placeholder.jpg)'}">
+              </div>
+              <div class="desc_div">
+                <ion-label class="heading_lbl">
+                  {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
+                </ion-label>
+                <ion-label class="heading_lbl">
+                  <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                    {{item.price}}
+                  </span>
+                  <span *ngIf="util.appSettings.currencySide == 'right'">{{item.price}}
+                    {{util.appSettings.currencySymbol}}
+                  </span>
+                </ion-label>
+              </div>
+            </div>
+            <div class="cartBtn2">
+              <ion-button (click)="removeQ(i)" fill="clear" size="small">
+                <ion-icon name="remove"></ion-icon>
+              </ion-button>
+              <p class="qunitity">{{item.quantiy}}</p>
+              <ion-button (click)="addQ(i)" fill="clear" size="small">
+                <ion-icon name="add"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+
+          <div *ngIf="item.quantiy > 0 && item.selectedItem?.length" style="width: 100%;">
+            <div class="mainCat" *ngFor="let subItems of item.selectedItem;let j = index"
+              style="margin: 10px 0px !important;">
+              <div class="front-data">
+                <div class="image_div"
+                  [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/images/placeholder.jpg)'}">
+                </div>
+                <div class="desc_div">
+                  <ion-label class="heading_lbl">{{item.name}}</ion-label>
+                  <p *ngFor="let addods of subItems.item" class="sub-item-lbl">
+                    - {{addods.name}}
+                    <span style="color: black;">
+                      <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+                        {{addods.value}}
+                      </span>
+                      <span *ngIf="util.appSettings.currencySide == 'right'">{{addods.value}}
+                        {{util.appSettings.currencySymbol}}
+                      </span>
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div class="cartBtn2">
+                <ion-button (click)="removeQAddos(i,j)" fill="clear" size="small">
+                  <ion-icon name="remove"></ion-icon>
+                </ion-button>
+                <p class="qunitity">{{subItems.total}}</p>
+                <ion-button (click)="addQAddos(i,j)" fill="clear" size="small">
+                  <ion-icon name="add"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <ion-textarea style="font-size: 12px;background: #f3f3f3;" [(ngModel)]="cart.orderNotes"
+        [placeholder]="util.translate('Add special cooking instructions')" rows="5"></ion-textarea>
+      <div class="coupones" (click)="openCoupon()" *ngIf="!cart.coupon">
+        <img src="assets/images/discount.png" class="badge" />
+        <ion-label class="title">{{util.translate('Apply coupon code')}} <br>
+        </ion-label>
+      </div>
+
+      <div class="coupones" *ngIf="cart.coupon && cart.coupon.code">
+        <ion-label class="title" *ngIf="cart.coupon && cart.coupon.code">{{util.translate('Coupon Applied')}}<br>
+        </ion-label>
+        <ion-icon name="close-circle-outline" (click)="cart.coupon = null;cart.calcuate()" class="closedIcon">
+        </ion-icon>
+      </div>
+
+      <div class="billing">
+        <div class="singleRow">
+          <ion-label class="headerTitle">{{util.translate('Item Total')}}</ion-label>
+          <ion-label class="price">
+            <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+              {{cart.totalPrice}}
+            </span>
+            <span *ngIf="util.appSettings.currencySide == 'right'">{{cart.totalPrice}}
+              {{util.appSettings.currencySymbol}}
+            </span>
+          </ion-label>
+        </div>
+        <div class="singleRow" *ngIf="cart.discount && cart.coupon">
+          <ion-label class="headerTitle">{{util.translate('Discount')}}</ion-label>
+          <ion-label class="price"> -
+            <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+              {{cart.discount}}
+            </span>
+            <span *ngIf="util.appSettings.currencySide == 'right'">{{cart.discount}}
+              {{util.appSettings.currencySymbol}}
+            </span>
+          </ion-label>
+        </div>
+        <div class="singleRow">
+          <ion-label class="headerTitle">{{util.translate('Taxes & Charges')}} ({{util.generalSettings.tax}} %)
+          </ion-label>
+          <ion-label class="price">
+            <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+              {{cart.orderTax}}
+            </span>
+            <span *ngIf="util.appSettings.currencySide == 'right'">{{cart.orderTax}}
+              {{util.appSettings.currencySymbol}}
+            </span>
+          </ion-label>
+        </div>
+      </div>
+      <p class="instructions">
+        {{util.translate('Orders once placed cannot be cancelled and are non-refundable')}}
+      </p>
+    </div>
+  </div>
+</ion-content>
+<ion-footer *ngIf="cart.cart?.length" (click)="checkout()">
+  <ion-toolbar color="primary">
+    <ion-label color="light" class="category-cart-lbl">{{cart.totalItem}} {{util.translate('ITEM')}}</ion-label>
+    <ion-label color="light" class="category-cart-lbl">
+      <span *ngIf="util.appSettings.currencySide == 'left'">{{util.appSettings.currencySymbol}}
+        {{cart.grandTotal}}
+      </span>
+      <span *ngIf="util.appSettings.currencySide == 'right'">{{cart.grandTotal}}
+        {{util.appSettings.currencySymbol}}
+      </span>
+      {{util.translate('total price')}}</ion-label>
+
+    <ion-button slot="end" fill="clear" color="light" class="category-cart-lbl">
+      {{util.translate('Checkout')}}
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

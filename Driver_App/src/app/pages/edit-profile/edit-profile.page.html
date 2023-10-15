@@ -1,0 +1,76 @@
+<!--
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : Food Delivery Ionic 7 And Laravel
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2023-present initappz.
+-->
+<ion-header class="ion-no-border">
+  <ion-toolbar mode="ios" color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="t"> {{util.translate('Profile')}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="edit_flag = !edit_flag" *ngIf="edit_flag">
+        <ion-icon slot="icon-only" name="pencil"></ion-icon>
+      </ion-button>
+      <ion-button (click)="update()" *ngIf="!edit_flag">
+        <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="edit-profile-screen">
+
+    <div class="main_div">
+
+      <div class="info_div">
+        <div class="user_img"
+          [ngStyle]="{'background-image':'url('+api.mediaURL+cover+'),url(assets/images/placeholder.jpg)'}"
+          (click)="updateProfile()">
+        </div>
+
+        <div class="name">
+          <div class="content_div">
+            <ion-input type="text" [disabled]="edit_flag" [placeholder]="util.translate('First name')"
+              [(ngModel)]="fname">
+            </ion-input>
+          </div>
+        </div>
+
+        <div class="name">
+          <div class="content_div">
+            <ion-input type="text" [disabled]="edit_flag" [placeholder]="util.translate('Last name')"
+              [(ngModel)]="lname">
+            </ion-input>
+          </div>
+        </div>
+
+        <div class="name">
+          <div class="content_div">
+            <ion-input type="text" [disabled]="true" [placeholder]="util.translate('Email')" [(ngModel)]="email">
+            </ion-input>
+          </div>
+        </div>
+
+        <div class="name">
+          <div class="content_div">
+            <ion-input type="text" [disabled]="true" [placeholder]="util.translate('Mobile')" [(ngModel)]="mobile">
+            </ion-input>
+          </div>
+        </div>
+        <ion-item>
+          <ion-label>{{util.translate('Available')}} </ion-label>
+          <ion-toggle slot="end" [disabled]="edit_flag" [(ngModel)]="current"></ion-toggle>
+        </ion-item>
+      </div>
+    </div>
+  </div>
+</ion-content>
